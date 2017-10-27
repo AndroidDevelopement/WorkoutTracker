@@ -1,8 +1,8 @@
 package tracker.workout.workouttracker;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,7 +13,16 @@ public class MainActivity extends AppCompatActivity {
     public Button workoutDiaryButton;
 
     public void init() {
-        createWorkoutButton = (Button)findViewById(R.id.createWorkoutButton);
+
+    	Database database = new Database(MainActivity.this);
+
+		try {
+			database.open();
+		} catch (DatabaseAlreadyOpenException e) {
+			e.printStackTrace();
+		}
+
+		createWorkoutButton = (Button)findViewById(R.id.createWorkoutButton);
         createWorkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
