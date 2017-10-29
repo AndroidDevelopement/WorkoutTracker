@@ -143,8 +143,12 @@ public class Database {
 
 		}
 		List<Exercise> ce = categoryExercises.get(category);
-		Exercise[] ceArray = new Exercise[ce.size() - 1];
-		return categoryExercises.get(category).toArray(ceArray);
+
+		if (ce == null) {
+			return null;
+		}
+
+		return ce.toArray(new Exercise[ce.size()]);
 	}
 
 }
