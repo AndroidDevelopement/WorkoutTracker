@@ -13,21 +13,13 @@ public class MainActivity extends AppCompatActivity {
     public Button workoutDiaryButton;
 
     public void init() {
-
-    	Database database = new Database(MainActivity.this);
-
-		try {
-			database.open();
-		} catch (DatabaseAlreadyOpenException e) {
-			e.printStackTrace();
-		}
-
 		createWorkoutButton = (Button)findViewById(R.id.createWorkoutButton);
         createWorkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent createWorkout = new Intent(MainActivity.this, CreateWorkoutActivity.class);
                 startActivity(createWorkout);
+
             }
         });
 
@@ -56,4 +48,5 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         init();
     }
+
 }
