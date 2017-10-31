@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="25dp"
-        android:columnWidth="100dp"
+        android:columnWidth="150dp"
         android:numColumns="2"
         android:stretchMode="spacingWidthUniform"
         android:visibility="visible" />

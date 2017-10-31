@@ -1,6 +1,8 @@
 package tracker.workout.workouttracker.database.table;
 
-public class Exercise {
+import java.io.Serializable;
+
+public class Exercise implements Serializable {
 
 	private int id;
 	private String name;
@@ -18,5 +20,4 @@ public class Exercise {
 	public String toString() {
 		return name;
 	}
-
 }

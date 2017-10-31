@@ -1,5 +1,6 @@
 package tracker.workout.workouttracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +12,7 @@ import tracker.workout.workouttracker.database.Database;
 import tracker.workout.workouttracker.database.DatabaseAlreadyClosedException;
 import tracker.workout.workouttracker.database.DatabaseAlreadyOpenException;
 import tracker.workout.workouttracker.database.table.Category;
+import tracker.workout.workouttracker.database.table.Exercise;
 
 public class CreateWorkoutActivity extends AppCompatActivity {
 
@@ -37,9 +39,10 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Category category = (Category) parent.getItemAtPosition(position);
-				// OPEN CATEGORY EXERCISES LIST
-				// database.getExercises(category);
-				// Mantas
+				Exercise[] exercises = database.getExercises(category);
+				Intent intent = new Intent(CreateWorkoutActivity.this, ExercisesForCategory.class);
+				intent.putExtra("exercises", exercises);
+				startActivity(intent);
 			}
 		});
     }

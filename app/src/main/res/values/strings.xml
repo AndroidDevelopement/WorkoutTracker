@@ -28,21 +28,37 @@
     </string-array>
 
     <string-array name="categories">
-        <item>CAT0</item>
-        <item>CAT1</item>
-        <item>CAT2</item>
-        <item>CAT3</item>
-        <item>CAT4</item>
-        <item>CAT5</item>
-        <item>CAT6</item>
-        <item>CAT7</item>
+        <item>Chest</item>
+        <item>Leg</item>
+        <item>Back</item>
+        <item>ABS</item>
+        <item>Biceps</item>
+        <item>Triceps</item>
+        <item>Shoulders</item>
     </string-array>
 
     <!--categoryID:exerciseName-->
     <string-array name="exercises">
         <item>0:Barbell Bench Press</item>
+        <item>0:Barbell Incline Bench Press</item>
+        <item>0:Dips</item>
+        <item>0:Dumbbell Flys</item>
         <item>1:Squat</item>
+        <item>1:Leg Press</item>
+        <item>1:Dumbbell Lunge</item>
+        <item>1:Standing Calf Raise</item>
         <item>2:Barbell Deadlift</item>
+        <item>2:Pull Up</item>
+        <item>2:Standing T-bar Row</item>
+        <item>2:Single-Arm Dumbbell Row</item>
+        <item>3:Plank</item>
+        <item>3:Crunches</item>
+        <item>4:Hammer Curl</item>
+        <item>4:Biceps Curl</item>
+        <item>5:Close-Grip Bench Press</item>
+        <item>5:Dumbbell Overhead Triceps Press</item>
+        <item>6:Military Press</item>
+        <item>6:Front Barbell Raise</item>
     </string-array>
 
 </resources>
