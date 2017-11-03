@@ -57,15 +57,4 @@ public class LogWorkoutActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 }
