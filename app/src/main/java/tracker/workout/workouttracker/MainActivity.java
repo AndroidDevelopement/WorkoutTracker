@@ -17,9 +17,8 @@ public class MainActivity extends AppCompatActivity {
         createWorkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent createWorkout = new Intent(MainActivity.this, CreateWorkoutActivity.class);
+                Intent createWorkout = new Intent(MainActivity.this, CreateWorkout.class);
                 startActivity(createWorkout);
-
             }
         });
 

@@ -1,11 +1,15 @@
 package tracker.workout.workouttracker.database;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +19,7 @@ import java.util.Map;
 import tracker.workout.workouttracker.R;
 import tracker.workout.workouttracker.database.table.Category;
 import tracker.workout.workouttracker.database.table.Exercise;
+import tracker.workout.workouttracker.database.table.Workout;
 
 public class Database {
 
@@ -22,6 +27,7 @@ public class Database {
 	private SQLiteOpenHelper sqLiteOpenHelper;
 	private SQLiteDatabase sqLiteDatabase;
 	private Category[] categories;
+	private Workout[] workouts;
 	private Map<Category, List<Exercise>> categoryExercises;
 
 	private class OpenDatabaseTask extends AsyncTask<Void, Void, Void> {
@@ -40,6 +46,8 @@ public class Database {
 					for (String string : context.getResources().getStringArray(R.array.categories)) {
 						cv.put("name", string);
 					}
+
+					System.out.println(cv);
 
 					db.insert("category", null, cv);
 
@@ -81,6 +89,7 @@ public class Database {
 			};
 
 			sqLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
+
 			return null;
 		}
 	}
@@ -151,4 +160,33 @@ public class Database {
 		return ce.toArray(new Exercise[ce.size()]);
 	}
 
+	public void addWorkout(String workoutName) {
+		ContentValues cv = new ContentValues();
+		cv.put("name", workoutName);
+		sqLiteDatabase.insert("workout", null, cv);
+		getWorkouts();
+	}
+
+	public String[] getWorkouts() {
+		String[] tableColumns = {"name"};
+		String whereClause = "";
+		String[] whereArgs = {};
+		String orderBy = "";
+		Cursor c = this.sqLiteDatabase.query("workout", tableColumns, whereClause, whereArgs,
+				null, null, orderBy);
+
+		ArrayList<String> workoutNames = new ArrayList<String>();
+
+		if(c.getCount() > 0) {
+			c.moveToFirst();
+		}
+
+		while(!c.isLast()) {
+			workoutNames.add(c.getString(0));
+			c.moveToNext();
+		}
+
+		workoutNames.add(c.getString(0));
+		return workoutNames.toArray(new String[workoutNames.size()]);
+	}
 }
