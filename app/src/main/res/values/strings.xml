@@ -4,7 +4,7 @@
     <string name="database_name">workout_tracker</string>
 
     <!--Increase or decrease version to delete and recreate the database-->
-    <integer name="database_version">1</integer>
+    <integer name="database_version">2</integer>
 
     <string-array name="create_statements">
         <item>CREATE TABLE exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)</item>

@@ -35,21 +35,17 @@ public class Database {
 						db.execSQL(string);
 					}
 
-					ContentValues cv = new ContentValues();
-
 					for (String string : context.getResources().getStringArray(R.array.categories)) {
+						ContentValues cv = new ContentValues();
 						cv.put("name", string);
+						db.insert("category", null, cv);
 					}
-
-					db.insert("category", null, cv);
-
-					cv = new ContentValues();
 
 					for (String string : context.getResources().getStringArray(R.array.exercises)) {
+						ContentValues cv = new ContentValues();
 						cv.put("name", string.split(":")[1]);
+						db.insert("exercise", null, cv);
 					}
-
-					db.insert("exercise", null, cv);
 				}
 
 				@Override
@@ -81,6 +77,7 @@ public class Database {
 			};
 
 			sqLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
+
 			return null;
 		}
 	}
