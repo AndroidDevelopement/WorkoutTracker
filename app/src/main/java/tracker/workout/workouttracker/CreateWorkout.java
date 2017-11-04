@@ -11,12 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 
-import tracker.workout.workouttracker.database.DatabaseAlreadyClosedException;
-import tracker.workout.workouttracker.database.DatabaseAlreadyOpenException;
-import tracker.workout.workouttracker.database.Database;
 import tracker.workout.workouttracker.database.table.Exercise;
 
 public class CreateWorkout extends AppCompatActivity {
@@ -24,9 +20,10 @@ public class CreateWorkout extends AppCompatActivity {
     public Button addExerciseButton;
     public Button saveExerciseButton;
     public ArrayList<Exercise> workoutExercises = new ArrayList<Exercise>();
+    public DatabaseHelper dbHelper;
+    private String inputText = "";
     private ListView workoutExercisesList;
-    private String m_Text = "";
-    private Database database;
+
 
 
     public void init() {
@@ -46,10 +43,8 @@ public class CreateWorkout extends AppCompatActivity {
         saveExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Will need to write this workout to DB here
                 AlertDialog.Builder builder = new AlertDialog.Builder(CreateWorkout.this);
                 builder.setTitle("Workout Name");
-
                 final EditText input = new EditText(CreateWorkout.this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
@@ -58,11 +53,15 @@ public class CreateWorkout extends AppCompatActivity {
                 builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        m_Text = input.getText().toString();
-                        System.out.println(workoutExercises);
-                        database.addWorkout(m_Text);
-                        Intent mainActivity = new Intent(CreateWorkout.this, MainActivity.class);
-                        startActivity(mainActivity);
+                        inputText = input.getText().toString();
+                        Exercise[] arr = workoutExercises.toArray(new Exercise[workoutExercises.size()]);
+                        System.out.println(arr);
+                        boolean successful = dbHelper.insertWorkout(inputText, arr);
+                        System.out.println(successful);
+                        if(true) {
+                            Intent mainActivity = new Intent(CreateWorkout.this, MainActivity.class);
+                            startActivity(mainActivity);
+                        }
                     }
                 });
 
@@ -88,19 +87,11 @@ public class CreateWorkout extends AppCompatActivity {
 
         if (extras != null) {
             workoutExercises = (ArrayList<Exercise>) extras.get("workoutExercises");
-
             ArrayAdapter<Exercise> adapter = new ArrayAdapter(this, R.layout.list_item, workoutExercises);
             workoutExercisesList.setAdapter(adapter);
         }
 
-        database = new Database(this);
-
-        try {
-            database.open();
-        } catch (DatabaseAlreadyOpenException e) {
-            e.printStackTrace();
-        }
-
+        dbHelper = new DatabaseHelper(this);
         init();
     }
 }
