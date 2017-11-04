@@ -13,13 +13,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import java.util.ArrayList;
 
-import tracker.workout.workouttracker.database.table.Exercise;
-
 public class CreateWorkout extends AppCompatActivity {
 
     public Button addExerciseButton;
     public Button saveExerciseButton;
-    public ArrayList<Exercise> workoutExercises = new ArrayList<Exercise>();
+    public ArrayList<String> workoutExercises = new ArrayList<String>();
     public DatabaseHelper dbHelper;
     private String inputText = "";
     private ListView workoutExercisesList;
@@ -27,7 +25,6 @@ public class CreateWorkout extends AppCompatActivity {
 
 
     public void init() {
-
         addExerciseButton = (Button)findViewById(R.id.addExercise);
         saveExerciseButton = (Button)findViewById(R.id.save);
 
@@ -54,11 +51,9 @@ public class CreateWorkout extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         inputText = input.getText().toString();
-                        Exercise[] arr = workoutExercises.toArray(new Exercise[workoutExercises.size()]);
-                        System.out.println(arr);
+                        String[] arr = workoutExercises.toArray(new String[workoutExercises.size()]);
                         boolean successful = dbHelper.insertWorkout(inputText, arr);
-                        System.out.println(successful);
-                        if(true) {
+                        if(successful) {
                             Intent mainActivity = new Intent(CreateWorkout.this, MainActivity.class);
                             startActivity(mainActivity);
                         }
@@ -86,8 +81,8 @@ public class CreateWorkout extends AppCompatActivity {
         final Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            workoutExercises = (ArrayList<Exercise>) extras.get("workoutExercises");
-            ArrayAdapter<Exercise> adapter = new ArrayAdapter(this, R.layout.list_item, workoutExercises);
+            workoutExercises = (ArrayList<String>) extras.get("workoutExercises");
+            ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.list_item, workoutExercises);
             workoutExercisesList.setAdapter(adapter);
         }
 

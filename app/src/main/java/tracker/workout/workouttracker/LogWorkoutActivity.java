@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.Arrays;
-import tracker.workout.workouttracker.database.table.Category;
+
 
 public class LogWorkoutActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class LogWorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_workout);
         gridView = (ListView) findViewById(R.id.workoutListView);
         myDb = new DatabaseHelper(this);
-        ArrayAdapter<Category> adapter = new ArrayAdapter(this, R.layout.list_item, myDb.getWorkoutNames());
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.list_item, myDb.getWorkoutNames());
         gridView.setAdapter(adapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -35,6 +35,7 @@ public class LogWorkoutActivity extends AppCompatActivity {
                 Intent intent = new Intent(LogWorkoutActivity.this, LogThisWorkout.class);
                 intent.putExtra("exercises", exercises);
                 startActivity(intent);
+
 
 //                final Bundle extras = getIntent().getExtras();
 //                ArrayList<Exercise> workoutExercises = (ArrayList<Exercise>) extras.get("workoutExercises");
