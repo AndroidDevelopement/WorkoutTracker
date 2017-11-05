@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
 
-public class AddExerciseActivity extends AppCompatActivity {
+public class CategoriesActivity extends AppCompatActivity {
 
     private ListView gridView;
 	public DatabaseHelper dbHelper;
@@ -17,7 +17,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_exercise);
+		setContentView(R.layout.activity_categories);
         gridView = (ListView) findViewById(R.id.categoryListView);
 		dbHelper = new DatabaseHelper(this);
 		String[] categories = this.getResources().getStringArray(R.array.categories);
@@ -31,7 +31,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 				String[] categoryExercises = dbHelper.getExercisesForCategory(categoryName);
 				Bundle extras = getIntent().getExtras();
 				ArrayList<String> workoutExercises = (ArrayList<String>) extras.get("workoutExercises");
-				Intent intent = new Intent(AddExerciseActivity.this, ExercisesForCategory.class);
+				Intent intent = new Intent(CategoriesActivity.this, ExercisesForCategoryActivity.class);
 				intent.putExtra("exercises", categoryExercises);
 				intent.putExtra("workoutExercises", workoutExercises);
 				startActivity(intent);

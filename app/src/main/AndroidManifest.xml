@@ -16,17 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddExerciseActivity">
+        <activity android:name=".CategoriesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".LogWorkoutActivity" />
         <activity android:name=".WorkoutDiaryActivity" />
-        <activity android:name=".ExercisesForCategory" />
-        <activity android:name=".CreateWorkout" />
+        <activity android:name=".ExercisesForCategoryActivity" />
+        <activity android:name=".CreateWorkoutActivity" />
         <activity android:name=".LogThisWorkout"></activity>
     </application>
 

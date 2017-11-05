@@ -1,27 +1,12 @@
 <resources>
     <string name="app_name">WorkoutTracker</string>
 
-    <string name="database_name">workout_trackeraaaaaa</string>
-
     <!--Increase or decrease version to delete and recreate the database-->
-    <integer name="database_version">2</integer>
+    <integer name="database_version">27</integer>
 
     <string-array name="create_statements">
         <item>CREATE TABLE exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE, category VARCHAR (50))</item>
-        <item>CREATE TABLE workout (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50), exercises VARCHAR (1000))</item>
-    </string-array>
-
-    <string-array name="wipe_database">
-        <item>workout_exercise</item>
-        <item>DROP TABLE workout_exercise</item>
-        <item>category_exercise</item>
-        <item>DROP TABLE category_exercise</item>
-        <item>workout</item>
-        <item>DROP TABLE workout</item>
-        <item>category</item>
-        <item>DROP TABLE category</item>
-        <item>exercise</item>
-        <item>DROP TABLE exercise</item>
+        <item>CREATE TABLE workouts (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50), exercises VARCHAR (1000))</item>
     </string-array>
 
     <string-array name="categories">

@@ -5,30 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-
-
-/**
- * Created by krisfoster on 04/11/2017.
- */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "workout_tracker.db";
     public static final String EXERCISES_TABLE = "exercises";
-    public static final String WORKOUT_TABLE = "workout";
-    private Context context;
+    public static final String WORKOUT_TABLE = "workouts";
     public static String strSeparator = "__,__";
+    private Context context;
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 21);
+        super(context, DATABASE_NAME, null, context.getResources().getInteger(R.integer.database_version));
         this.context = context;
-
     }
 
     @Override
@@ -49,17 +38,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cv.put("category", categoryName);
             db.insert("exercises", null, cv);
         }
-
-
-
-//        ContentValues cv = new ContentValues();
-//        cv.put("name", name);
-//        cv.put("exercises", convertArrayToString(arr));
-//        long result = db.insert("workout", null, cv);
-
-//        db.execSQL("CREATE TABLE "+ EXERCISE_TABLE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)");
-//        db.execSQL("CREATE TABLE " + CATEGORY_TABLE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)");
-//        db.execSQL("CREATE TABLE " + WORKOUT_TABLE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50), exercises VARCHAR (1000))");
     }
 
     @Override
@@ -69,27 +47,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertWorkout(String name, String[] exercises) {
-
-        ArrayList<String> exercisesArr = new ArrayList();
-
-        for (int i = 0; i < exercises.length; i++) {
-            exercisesArr.add(exercises[i].toString());
-        }
-
-        String[] arr = exercisesArr.toArray(new String[exercisesArr.size()]);
+    // Adds a new workout to the Database
+    public void insertWorkout(String name, String[] exercises) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("name", name);
-        cv.put("exercises", convertArrayToString(arr));
-        long result = db.insert("workout", null, cv);
+        ArrayList<String> exercisesList = new ArrayList();
+        String[] workoutExercises;
 
-        if(result == -1) {
-            return false;
-        } else {
-            return true;
+        for (int i = 0; i < exercises.length; i++) {
+            exercisesList.add(exercises[i].toString());
         }
+
+        workoutExercises = exercisesList.toArray(new String[exercisesList.size()]);
+        cv.put("name", name);
+        cv.put("exercises", convertArrayToString(workoutExercises));
+        db.insert("workouts", null, cv);
+    }
+
+    // Returns a String array of all of the workout names
+    public String[] getWorkoutNames() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("Select name from workouts", null);
+        List<String> e = new ArrayList<String>();
+
+        while (c.moveToNext()) {
+            e.add(c.getString(0));
+        }
+
+        return e.toArray(new String[e.size()]);
+    }
+
+    // Returns a String array of all exercises associated with a workout
+    public String[] getWorkoutExercises(String workoutName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("Select exercises from workouts Where name like '" + workoutName + "'", null);
+        String[] ex = {};
+
+        while (c.moveToNext()) {
+            ex = (convertStringToArray(c.getString(0)));
+        }
+
+        return ex;
+    }
+
+    // Returns all exercises associated with a particular category
+    public String[] getExercisesForCategory(String category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("Select name from exercises Where category like '" + category + "'", null);
+        List<String> e = new ArrayList<String>();
+
+        while (c.moveToNext()) {
+            e.add(c.getString(0));
+        }
+
+        return e.toArray(new String[e.size()]);
     }
 
     public static String convertArrayToString(String[] array){
@@ -103,65 +115,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return str;
     }
+
     public static String[] convertStringToArray(String str){
         String[] arr = str.split(strSeparator);
         return arr;
-    }
-
-    public String[] getWorkoutNames() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c = db.rawQuery("Select name from workout", null);
-        List<String> e = new ArrayList<String>();
-
-        if(c.getCount() > 0) {
-            c.moveToFirst();
-        }
-
-        while(!c.isLast()) {
-            e.add(c.getString(0));
-            c.moveToNext();
-        }
-
-        e.add(c.getString(0));
-
-
-
-        return e.toArray(new String[e.size()]);
-
-    }
-
-    public String[] getWorkoutExercises(String workoutName) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c = db.rawQuery("Select name from workouts Where name like '" + workoutName + "'", null);
-        List<String> e = new ArrayList<String>();
-        String[] ex = {};
-
-        if(c.getCount() > 0) {
-            c.moveToFirst();
-            String exercisesString = c.getString(0);
-            ex = (convertStringToArray(exercisesString));
-        }
-
-        return ex;
-    }
-
-    public String[] getExercisesForCategory(String category) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c = db.rawQuery("Select name from exercises Where category like '" + category + "'", null);
-        List<String> e = new ArrayList<String>();
-
-        if(c.getCount() > 0) {
-            c.moveToFirst();
-        }
-
-        while(!c.isLast()) {
-            e.add(c.getString(0));
-            c.moveToNext();
-        }
-
-        e.add(c.getString(0));
-
-        return e.toArray(new String[e.size()]);
-
     }
 }

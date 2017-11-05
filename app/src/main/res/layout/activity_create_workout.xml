@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cream"
     tools:context="tracker.workout.workouttracker.CreateWorkout">
 
     <Button
         android:id="@+id/addExercise"
-        android:background="@color/blue1"
+        android:background="@color/yellow"
         android:textSize="24sp"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Add Exercise"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -27,13 +28,28 @@
         app:layout_constraintHorizontal_bias="0.0">
     </ListView>
 
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="No Exercises Added.."
+        android:textSize="20sp"
+        android:textColor="@color/navy"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <Button
         android:id="@+id/save"
-        android:background="@color/green1"
+        android:background="@color/dullGreen"
         android:textSize="24sp"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="Save Workout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

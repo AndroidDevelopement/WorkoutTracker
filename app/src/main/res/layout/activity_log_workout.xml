@@ -4,11 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cream"
     tools:context="tracker.workout.workouttracker.LogWorkoutActivity">
 
     <ListView
         android:id="@+id/workoutListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_width="0dp"
+        android:layout_height="228dp">
+    </ListView>
+
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="0dp"
+        android:textColor="@color/navy"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="No Workouts Created.."
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/emptyCreateWorkoutButton"
+        android:background="@color/yellow"
+        android:textSize="24sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Create Workout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

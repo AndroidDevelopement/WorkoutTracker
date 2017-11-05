@@ -4,6 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cream"
     tools:context="tracker.workout.workouttracker.LogThisWorkout">
+
+    <ListView
+        android:id="@+id/logThisWorkoutListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+    <Button
+        android:id="@+id/save"
+        android:background="@color/green1"
+        android:textSize="24sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log This Workout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
 
 </android.support.constraint.ConstraintLayout>

@@ -11,9 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
-public class CreateWorkout extends AppCompatActivity {
+public class CreateWorkoutActivity extends AppCompatActivity {
 
     public Button addExerciseButton;
     public Button saveExerciseButton;
@@ -22,8 +24,6 @@ public class CreateWorkout extends AppCompatActivity {
     private String inputText = "";
     private ListView workoutExercisesList;
 
-
-
     public void init() {
         addExerciseButton = (Button)findViewById(R.id.addExercise);
         saveExerciseButton = (Button)findViewById(R.id.save);
@@ -31,7 +31,7 @@ public class CreateWorkout extends AppCompatActivity {
         addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addActivity = new Intent(CreateWorkout.this, AddExerciseActivity.class);
+                Intent addActivity = new Intent(CreateWorkoutActivity.this, CategoriesActivity.class);
                 addActivity.putExtra("workoutExercises", workoutExercises);
                 startActivity(addActivity);
             }
@@ -40,23 +40,21 @@ public class CreateWorkout extends AppCompatActivity {
         saveExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CreateWorkout.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateWorkoutActivity.this);
                 builder.setTitle("Workout Name");
-                final EditText input = new EditText(CreateWorkout.this);
+                final EditText input = new EditText(CreateWorkoutActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
 
-                // Set up the buttons
+                // Setting up buttons
                 builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         inputText = input.getText().toString();
                         String[] arr = workoutExercises.toArray(new String[workoutExercises.size()]);
-                        boolean successful = dbHelper.insertWorkout(inputText, arr);
-                        if(successful) {
-                            Intent mainActivity = new Intent(CreateWorkout.this, MainActivity.class);
-                            startActivity(mainActivity);
-                        }
+                        dbHelper.insertWorkout(inputText, arr);
+                        Intent mainActivity = new Intent(CreateWorkoutActivity.this, MainActivity.class);
+                        startActivity(mainActivity);
                     }
                 });
 
@@ -70,7 +68,6 @@ public class CreateWorkout extends AppCompatActivity {
                 builder.show();
             }
         });
-
     }
 
     @Override
@@ -86,6 +83,8 @@ public class CreateWorkout extends AppCompatActivity {
             workoutExercisesList.setAdapter(adapter);
         }
 
+        TextView empty=(TextView)findViewById(R.id.empty);
+        workoutExercisesList.setEmptyView(empty);
         dbHelper = new DatabaseHelper(this);
         init();
     }

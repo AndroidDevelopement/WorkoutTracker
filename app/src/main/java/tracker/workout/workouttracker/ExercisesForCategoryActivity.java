@@ -9,12 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
 
-
-/**
- * Created by Mantas on 29/10/2017.
- */
-
-public class ExercisesForCategory extends AppCompatActivity {
+public class ExercisesForCategoryActivity extends AppCompatActivity {
 
     private ListView exerciseList;
 
@@ -38,7 +33,7 @@ public class ExercisesForCategory extends AppCompatActivity {
                 System.out.println(adapterView.getItemAtPosition(i));
                 ArrayList<String> workoutExercises = (ArrayList<String>) extras.get("workoutExercises");
                 workoutExercises.add((String) adapterView.getItemAtPosition(i));
-                Intent intent = new Intent(ExercisesForCategory.this, CreateWorkout.class);
+                Intent intent = new Intent(ExercisesForCategoryActivity.this, CreateWorkoutActivity.class);
                 intent.putExtra("workoutExercises", workoutExercises);
                 startActivity(intent);
             }

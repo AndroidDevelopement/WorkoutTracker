@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import java.util.Arrays;
+import android.widget.TextView;
 
 
 public class LogWorkoutActivity extends AppCompatActivity {
 
     private ListView gridView;
+    private Button emptyButton;
+    private TextView emptyText;
     private DatabaseHelper myDb;
 
     @Override
@@ -28,20 +31,26 @@ public class LogWorkoutActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String category = parent.getItemAtPosition(position).toString();
-                System.out.println("\n\n\n\n\n\n");
-                System.out.println(category);
                 String[] exercises = myDb.getWorkoutExercises(category);
-                System.out.println(Arrays.toString(exercises));
                 Intent intent = new Intent(LogWorkoutActivity.this, LogThisWorkout.class);
                 intent.putExtra("exercises", exercises);
                 startActivity(intent);
-
-
-//                final Bundle extras = getIntent().getExtras();
-//                ArrayList<Exercise> workoutExercises = (ArrayList<Exercise>) extras.get("workoutExercises");
-//                intent.putExtra("workoutExercises", workoutExercises);
-//                startActivity(intent);
             }
         });
+
+        emptyButton=(Button)findViewById(R.id.emptyCreateWorkoutButton);
+        gridView.setEmptyView(emptyButton);
+        emptyText=(TextView)findViewById(R.id.emptyText);
+        gridView.setEmptyView(emptyText);
+
+        emptyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addActivity = new Intent(LogWorkoutActivity.this, CreateWorkoutActivity.class);
+                startActivity(addActivity);
+            }
+        });
+
+
     }
 }
