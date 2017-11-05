@@ -2,7 +2,7 @@
     <string name="app_name">WorkoutTracker</string>
 
     <!--Increase or decrease version to delete and recreate the database-->
-    <integer name="database_version">27</integer>
+    <integer name="database_version">28</integer>
 
     <string-array name="create_statements">
         <item>CREATE TABLE exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE, category VARCHAR (50))</item>
