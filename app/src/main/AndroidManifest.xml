@@ -26,7 +26,7 @@
         <activity android:name=".WorkoutDiaryActivity" />
         <activity android:name=".ExercisesForCategoryActivity" />
         <activity android:name=".CreateWorkoutActivity" />
-        <activity android:name=".LogThisWorkout"></activity>
+        <activity android:name=".LogThisWorkoutActivity"></activity>
     </application>
 
 </manifest>

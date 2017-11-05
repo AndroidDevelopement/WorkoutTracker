@@ -113,6 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 str = str+strSeparator;
             }
         }
+
         return str;
     }
 

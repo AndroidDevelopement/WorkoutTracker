@@ -32,7 +32,7 @@ public class LogWorkoutActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String category = parent.getItemAtPosition(position).toString();
                 String[] exercises = myDb.getWorkoutExercises(category);
-                Intent intent = new Intent(LogWorkoutActivity.this, LogThisWorkout.class);
+                Intent intent = new Intent(LogWorkoutActivity.this, LogThisWorkoutActivity.class);
                 intent.putExtra("exercises", exercises);
                 startActivity(intent);
             }
@@ -50,7 +50,5 @@ public class LogWorkoutActivity extends AppCompatActivity {
                 startActivity(addActivity);
             }
         });
-
-
     }
 }

@@ -1,6 +1,5 @@
 package tracker.workout.workouttracker;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,9 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.Arrays;
-
-public class LogThisWorkout extends AppCompatActivity {
+public class LogThisWorkoutActivity extends AppCompatActivity {
 
     private ListView gridView;
     private DatabaseHelper myDb;
