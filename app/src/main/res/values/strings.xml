@@ -1,37 +1,19 @@
 <resources>
     <string name="app_name">WorkoutTracker</string>
 
-    <string name="database_name">workout_tracker</string>
-
     <!--Increase or decrease version to delete and recreate the database-->
-    <integer name="database_version">2</integer>
+    <integer name="database_version">28</integer>
 
     <string-array name="create_statements">
-        <item>CREATE TABLE exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)</item>
-        <item>CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)</item>
-        <item>CREATE TABLE category_exercise (categoryId INTEGER REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE, exerciseId INTEGER REFERENCES exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE, PRIMARY KEY (categoryId, exerciseId))</item>
-        <item>CREATE TABLE workout (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50))</item>
-        <item>CREATE TABLE workout_exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, workoutId INTEGER REFERENCES workout (id) ON DELETE RESTRICT ON UPDATE CASCADE, exerciseId INTEGER REFERENCES exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE, sets INTEGER, reps INTEGER)</item>
-    </string-array>
-
-    <string-array name="wipe_database">
-        <item>workout_exercise</item>
-        <item>DROP TABLE workout_exercise</item>
-        <item>category_exercise</item>
-        <item>DROP TABLE category_exercise</item>
-        <item>workout</item>
-        <item>DROP TABLE workout</item>
-        <item>category</item>
-        <item>DROP TABLE category</item>
-        <item>exercise</item>
-        <item>DROP TABLE exercise</item>
+        <item>CREATE TABLE exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE, category VARCHAR (50))</item>
+        <item>CREATE TABLE workouts (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50), exercises VARCHAR (1000))</item>
     </string-array>
 
     <string-array name="categories">
         <item>Chest</item>
-        <item>Leg</item>
+        <item>Legs</item>
         <item>Back</item>
-        <item>ABS</item>
+        <item>Abs</item>
         <item>Biceps</item>
         <item>Triceps</item>
         <item>Shoulders</item>

@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
     public Button createWorkoutButton;
     public Button logWorkoutButton;
     public Button workoutDiaryButton;
+    public DatabaseHelper dbHelper;
 
     public void init() {
 		createWorkoutButton = (Button)findViewById(R.id.createWorkoutButton);
@@ -19,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent createWorkout = new Intent(MainActivity.this, CreateWorkoutActivity.class);
                 startActivity(createWorkout);
-
             }
         });
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbHelper = new DatabaseHelper(this);
         init();
     }
-
 }
