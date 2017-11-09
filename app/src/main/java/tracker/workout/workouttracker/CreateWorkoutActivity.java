@@ -2,9 +2,10 @@ package tracker.workout.workouttracker;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,13 +21,32 @@ public class CreateWorkoutActivity extends AppCompatActivity {
     public Button addExerciseButton;
     public Button saveExerciseButton;
     public ArrayList<String> workoutExercises = new ArrayList<String>();
-    public DatabaseHelper dbHelper;
     private String inputText = "";
+    private DatabaseHelper databaseHelper;
     private ListView workoutExercisesList;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_create_workout);
+		workoutExercisesList = (ListView) findViewById(R.id.listWorkoutExercises);
+		final Bundle extras = getIntent().getExtras();
+
+		if (extras != null) {
+			workoutExercises = (ArrayList<String>) extras.get("workoutExercises");
+			ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.list_item, workoutExercises);
+			workoutExercisesList.setAdapter(adapter);
+		}
+
+		TextView empty = (TextView) findViewById(R.id.empty);
+		workoutExercisesList.setEmptyView(empty);
+		databaseHelper = new DatabaseHelper(getApplicationContext());
+		init();
+	}
+
     public void init() {
-        addExerciseButton = (Button)findViewById(R.id.addExercise);
-        saveExerciseButton = (Button)findViewById(R.id.save);
+        addExerciseButton = (Button) findViewById(R.id.addExercise);
+        saveExerciseButton = (Button) findViewById(R.id.save);
 
         addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,10 +71,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         inputText = input.getText().toString();
-                        String[] arr = workoutExercises.toArray(new String[workoutExercises.size()]);
-                        dbHelper.insertWorkout(inputText, arr);
-                        Intent mainActivity = new Intent(CreateWorkoutActivity.this, MainActivity.class);
-                        startActivity(mainActivity);
+                        new CreateWorkoutTask().execute();
                     }
                 });
 
@@ -70,22 +87,14 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_workout);
-        workoutExercisesList = (ListView) findViewById(R.id.listWorkoutExercises);
-        final Bundle extras = getIntent().getExtras();
+	private class CreateWorkoutTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... voids) {
+			String[] arr = workoutExercises.toArray(new String[workoutExercises.size()]);
+			databaseHelper.insertWorkout(inputText, arr);
+			startActivity(new Intent(CreateWorkoutActivity.this, MainActivity.class));
+			return null;
+		}
+	}
 
-        if (extras != null) {
-            workoutExercises = (ArrayList<String>) extras.get("workoutExercises");
-            ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.list_item, workoutExercises);
-            workoutExercisesList.setAdapter(adapter);
-        }
-
-        TextView empty=(TextView)findViewById(R.id.empty);
-        workoutExercisesList.setEmptyView(empty);
-        dbHelper = new DatabaseHelper(this);
-        init();
-    }
 }

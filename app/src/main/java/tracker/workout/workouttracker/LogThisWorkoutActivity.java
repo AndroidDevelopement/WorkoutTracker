@@ -10,7 +10,6 @@ import android.widget.ListView;
 public class LogThisWorkoutActivity extends AppCompatActivity {
 
     private ListView gridView;
-    private DatabaseHelper myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,4 +33,5 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
             }
         });
     }
+
 }
