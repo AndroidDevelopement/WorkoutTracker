@@ -1,4 +1,4 @@
-package tracker.workout.workouttracker;
+package tracker.workout.workouttracker.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import tracker.workout.workouttracker.DatabaseHelper;
+import tracker.workout.workouttracker.R;
 
 public class CreateWorkoutActivity extends AppCompatActivity {
 
@@ -91,7 +94,14 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 		@Override
 		protected Void doInBackground(Void... voids) {
 			String[] arr = workoutExercises.toArray(new String[workoutExercises.size()]);
-			databaseHelper.insertWorkout(inputText, arr);
+
+			databaseHelper.createWorkout(inputText);
+
+			for (String exercise : arr) {
+				// FIXME Instead of passing 0 ask to enter sets and reps.
+				databaseHelper.insertWorkout(inputText, exercise, 0, 0);
+			}
+
 			startActivity(new Intent(CreateWorkoutActivity.this, MainActivity.class));
 			return null;
 		}

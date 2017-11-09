@@ -1,4 +1,4 @@
-package tracker.workout.workouttracker;
+package tracker.workout.workouttracker.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
+
+import tracker.workout.workouttracker.R;
 
 public class ExercisesForCategoryActivity extends AppCompatActivity {
 

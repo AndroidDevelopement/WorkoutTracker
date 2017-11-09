@@ -1,4 +1,4 @@
-package tracker.workout.workouttracker;
+package tracker.workout.workouttracker.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import tracker.workout.workouttracker.R;
+import tracker.workout.workouttracker.dataContainers.Workout;
+import tracker.workout.workouttracker.dataContainers.WorkoutExercise;
 
 public class LogThisWorkoutActivity extends AppCompatActivity {
 
@@ -17,13 +21,16 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_this_workout);
         gridView = (ListView) findViewById(R.id.logThisWorkoutListView);
         final Bundle extras = getIntent().getExtras();
-        String[] exercises = {};
+
+        Workout workout = null;
+        WorkoutExercise[] workoutExercises = {};
 
         if (extras != null) {
-            exercises = (String[]) extras.get("exercises");
-        }
+			workout = (Workout) extras.getSerializable("workout");
+        	workoutExercises = workout.getExercises();
+		}
 
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.list_item, exercises);
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.list_item, workoutExercises);
         gridView.setAdapter(adapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

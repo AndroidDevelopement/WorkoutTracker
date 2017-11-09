@@ -1,4 +1,4 @@
-package tracker.workout.workouttracker;
+package tracker.workout.workouttracker.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,6 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import tracker.workout.workouttracker.DatabaseHelper;
+import tracker.workout.workouttracker.R;
+import tracker.workout.workouttracker.dataContainers.Workout;
 
 
 public class LogWorkoutActivity extends AppCompatActivity {
@@ -44,16 +48,16 @@ public class LogWorkoutActivity extends AppCompatActivity {
         });
     }
 
-	private class LogThisWorkoutTask extends AsyncTask<String, Void, String[]> {
+	private class LogThisWorkoutTask extends AsyncTask<String, Void, Workout> {
 		@Override
-		protected String[] doInBackground(String... strings) {
-			return databaseHelper.getWorkoutExercises(strings[0]);
+		protected Workout doInBackground(String... strings) {
+			return databaseHelper.getWorkout(strings[0]);
 		}
 
 		@Override
-		protected void onPostExecute(String[] exercises) {
+		protected void onPostExecute(Workout workout) {
 			Intent intent = new Intent(getApplicationContext(), LogThisWorkoutActivity.class);
-			intent.putExtra("exercises", exercises);
+			intent.putExtra("workout", workout);
 			startActivity(intent);
 		}
 	}
@@ -61,13 +65,13 @@ public class LogWorkoutActivity extends AppCompatActivity {
 	private class PopulateGridViewTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... voids) {
-			final String[] workoutNames = databaseHelper.getWorkoutNames();
+			final Workout[] workouts = databaseHelper.getWorkouts();
 
 			// Can't access view hierarchy on a different thread so run on UI thread after querying db.
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					gridView.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.list_item, workoutNames));
+					gridView.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.list_item, workouts));
 
 					gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 						@Override
