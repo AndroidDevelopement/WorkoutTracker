@@ -2,11 +2,14 @@
     <string name="app_name">WorkoutTracker</string>
 
     <!--Increase or decrease version to delete and recreate the database-->
-    <integer name="database_version">28</integer>
+    <integer name="database_version">2</integer>
 
     <string-array name="create_statements">
-        <item>CREATE TABLE exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE, category VARCHAR (50))</item>
-        <item>CREATE TABLE workouts (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50), exercises VARCHAR (1000))</item>
+        <item>CREATE TABLE exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)</item>
+        <item>CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)</item>
+        <item>CREATE TABLE category_exercise (categoryId INTEGER REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE, exerciseId INTEGER REFERENCES exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE, PRIMARY KEY (categoryId, exerciseId), UNIQUE (categoryId, exerciseId))</item>
+        <item>CREATE TABLE workout (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50))</item>
+        <item>CREATE TABLE workout_exercise (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, workoutId INTEGER REFERENCES workout (id) ON DELETE RESTRICT ON UPDATE CASCADE, exerciseId INTEGER REFERENCES exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE, sets INTEGER, reps INTEGER)</item>
     </string-array>
 
     <string-array name="categories">
@@ -42,5 +45,11 @@
         <item>6:Military Press</item>
         <item>6:Front Barbell Raise</item>
     </string-array>
+
+    <!--UI-->
+    <string name="create_workout">CREATE WORKOUT</string>
+    <string name="no_workouts_created">No Workouts Created..</string>
+    <string name="log_this_workout">Log This Workout</string>
+    <string name="workout_diary">Workout Diary Screen</string>
 
 </resources>

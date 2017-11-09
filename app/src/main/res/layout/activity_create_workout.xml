@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cream"
-    tools:context="tracker.workout.workouttracker.CreateWorkout">
+    tools:context="tracker.workout.workouttracker.CreateWorkoutActivity">
 
     <Button
         android:id="@+id/addExercise"
