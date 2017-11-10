@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cream"
-    tools:context="tracker.workout.workouttracker.LogThisWorkoutActivity">
+    tools:context="tracker.workout.workouttracker.activities.LogThisWorkoutActivity">
 
     <ListView
         android:id="@+id/logThisWorkoutListView"
