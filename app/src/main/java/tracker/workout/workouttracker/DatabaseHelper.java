@@ -6,17 +6,20 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import tracker.workout.workouttracker.dataContainers.Log;
 import tracker.workout.workouttracker.dataContainers.Workout;
 import tracker.workout.workouttracker.dataContainers.WorkoutExercise;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	public static final String DATABASE_NAME = "workout_tracker.db";
-	public static final String EXERCISE_TABLE = "exercise";
-	public static final String CATEGORY_TABLE = "category";
-	public static final String CATEGORY_EXERCISE_TABLE = "category_exercise";
-	public static final String WORKOUT_TABLE = "workout";
-	public static final String WORKOUT_EXERCISE_TABLE = "workout_exercise";
+	private static final String DATABASE_NAME = "workout_tracker.db";
+	private static final String EXERCISE_TABLE = "exercise";
+	private static final String CATEGORY_TABLE = "category";
+	private static final String CATEGORY_EXERCISE_TABLE = "category_exercise";
+	private static final String WORKOUT_TABLE = "workout";
+	private static final String WORKOUT_EXERCISE_TABLE = "workout_exercise";
+	private static final String LOG_TABLE = "log";
+	private static final String LOG_WORKOUT_EXERCISE_TABLE = "log_workout_exercise";
 
 	private Context context;
 
@@ -68,12 +71,95 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	private void reset(SQLiteDatabase db, int oldVersion, int newVersion) {
+		db.execSQL("DROP TABLE IF EXISTS " + LOG_WORKOUT_EXERCISE_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + LOG_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + WORKOUT_EXERCISE_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_EXERCISE_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + WORKOUT_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + EXERCISE_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
 		onCreate(db);
+	}
+
+	public long createLog(String date) {
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put("date", date);
+		return db.insert(LOG_TABLE, null, cv);
+	}
+
+	public long insertLogWorkoutExercise(long logId, long workoutExerciseId, int sets, int reps) {
+		// workoutExerciseId == workout_exercise.id <- primary key
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put("logId", logId);
+		cv.put("workoutExerciseId", workoutExerciseId);
+		cv.put("sets", sets);
+		cv.put("reps", reps);
+		return db.insert(LOG_WORKOUT_EXERCISE_TABLE, null, cv);
+	}
+
+	// TODO: TEST THE METHOD!
+	public Log getLoggedWorkout(long id) {
+		SQLiteDatabase db = getWritableDatabase();
+		Cursor c = db.query(LOG_TABLE, new String[] {"date"}, null, null, null, null, null);
+		String date = c.getString(0);
+
+		c = db.query(LOG_WORKOUT_EXERCISE_TABLE, null, "logId = ?", new String[] {Long.toString(id)}, null, null, null);
+
+		WorkoutExercise[] exercises = new WorkoutExercise[c.getCount()];
+
+		long workoutId = -1;
+		String workoutName = "";
+
+		for (int i = 0; i < c.getCount(); i++) {
+			c.moveToNext();
+
+			long workoutExerciseId = c.getLong(1);
+			int workoutExerciseSets = c.getInt(2);
+			int workoutExerciseReps = c.getInt(3);
+
+			Cursor workoutExerciseCursor = db.query(WORKOUT_EXERCISE_TABLE, new String[] {"workoutId", "exerciseId", "sets", "reps"}, "id = ?", new String[] {Long.toString(workoutExerciseId)}, null, null, null);
+
+			if (workoutId == -1) {
+				workoutId = workoutExerciseCursor.getLong(0);
+				workoutName = getWorkoutName(workoutId);
+			}
+
+			long exerciseId = c.getLong(1);
+			String exerciseName = getExerciseName(exerciseId);
+			int exerciseDefaultSets = c.getInt(2);
+			int exerciseDefaultReps = c.getInt(3);
+
+			exercises[i] = new WorkoutExercise(exerciseId, exerciseName, (workoutExerciseSets == 0) ? exerciseDefaultSets : workoutExerciseSets, (workoutExerciseReps == 0) ? exerciseDefaultReps : workoutExerciseReps);
+
+		}
+
+		return new Log(id, date, new Workout(workoutId, workoutName, exercises));
+	}
+
+	// TODO: TEST THE METHOD!
+	public Log[] getLoggedWorkouts() {
+		SQLiteDatabase db = getWritableDatabase();
+		Cursor c = db.query(LOG_TABLE, new String[] {"id"}, null, null, null, null, null);
+
+		Log[] logs = new Log[c.getCount()];
+
+		for (int i = 0; i < logs.length; i++) {
+			logs[i] = getLoggedWorkout(c.getLong(0));
+		}
+
+		return logs;
+	}
+
+	private String getExerciseName(long id) {
+		SQLiteDatabase db = getWritableDatabase();
+		Cursor c = db.query(EXERCISE_TABLE, new String[]{"name"}, "id = ?", new String[] {Long.toString(id)}, null, null, null);
+		if (c.getCount() == 1) {
+			c.moveToNext();
+			return c.getString(0);
+		}
+		return null;
 	}
 
 	private long getExerciseId(String name) {
@@ -96,20 +182,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return -1;
 	}
 
+	private String getWorkoutName(long id) {
+		SQLiteDatabase db = getWritableDatabase();
+		Cursor c = db.query(WORKOUT_TABLE, new String[]{"name"}, "id = ?", new String[] {Long.toString(id)}, null, null, null);
+		if (c.getCount() == 1) {
+			c.moveToNext();
+			return c.getString(0);
+		}
+		return null;
+	}
+
+	// Can be used to change defaults in workout_exercise or logged_workout tables.
 	// Returns if changed or not
-	public boolean changeSets(long rowId, int sets) {
+	public boolean changeSets(String table, long rowId, int sets) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put("sets", sets);
-		return db.update(WORKOUT_EXERCISE_TABLE, cv, "id = ?", new String[] {Long.toString(rowId)}) == 1;
+		return db.update(table, cv, (table == WORKOUT_EXERCISE_TABLE) ? "id" : "logId" + " = ?", new String[] {Long.toString(rowId)}) == 1;
 	}
 
+
+	// Can be used to change defaults in workout_exercise or logged_workout tables.
 	// Returns if changed or not
-	public boolean changeReps(long rowId, int reps) {
+	public boolean changeReps(String table, long rowId, int reps) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put("reps", reps);
-		return db.update(WORKOUT_EXERCISE_TABLE, cv, "id = ?", new String[] {Long.toString(rowId)}) == 1;
+		return db.update(table, cv, (table == WORKOUT_EXERCISE_TABLE) ? "id" : "logId" + " = ?", new String[] {Long.toString(rowId)}) == 1;
 	}
 
 	public int getReps(long rowId) {
@@ -164,6 +263,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			String workoutName = workoutNames[i];
 			workouts[i] = getWorkout(workoutName);
 		}
+
 		return workouts;
 	}
 
