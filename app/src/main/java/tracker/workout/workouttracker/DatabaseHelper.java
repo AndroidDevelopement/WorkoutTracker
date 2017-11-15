@@ -103,6 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public Log getLoggedWorkout(long id) {
 		SQLiteDatabase db = getWritableDatabase();
 		Cursor c = db.query(LOG_TABLE, new String[] {"date"}, null, null, null, null, null);
+		c.moveToNext();
 		String date = c.getString(0);
 
 		c = db.query(LOG_WORKOUT_EXERCISE_TABLE, null, "logId = ?", new String[] {Long.toString(id)}, null, null, null);
@@ -121,7 +122,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 			Cursor workoutExerciseCursor = db.query(WORKOUT_EXERCISE_TABLE, new String[] {"workoutId", "exerciseId", "sets", "reps"}, "id = ?", new String[] {Long.toString(workoutExerciseId)}, null, null, null);
 
-			if (workoutId == -1) {
+
+			if (workoutId == -1 && workoutExerciseCursor.getCount() > 0) {
+				workoutExerciseCursor.moveToNext();
 				workoutId = workoutExerciseCursor.getLong(0);
 				workoutName = getWorkoutName(workoutId);
 			}
@@ -146,6 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Log[] logs = new Log[c.getCount()];
 
 		for (int i = 0; i < logs.length; i++) {
+			c.moveToNext();
 			logs[i] = getLoggedWorkout(c.getLong(0));
 		}
 

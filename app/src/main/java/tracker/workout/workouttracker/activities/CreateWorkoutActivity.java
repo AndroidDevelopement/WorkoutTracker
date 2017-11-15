@@ -96,7 +96,6 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 			String[] arr = workoutExercises.toArray(new String[workoutExercises.size()]);
 
 			databaseHelper.createWorkout(inputText);
-
 			for (String exercise : arr) {
 				// FIXME Instead of passing 0 ask to enter sets and reps.
 				databaseHelper.insertWorkout(inputText, exercise, 0, 0);
