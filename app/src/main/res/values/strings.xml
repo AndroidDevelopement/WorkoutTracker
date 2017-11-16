@@ -2,7 +2,7 @@
     <string name="app_name">WorkoutTracker</string>
 
     <!--Increase or decrease version to delete and recreate the database-->
-    <integer name="database_version">9001</integer>
+    <integer name="database_version">123</integer>
 
     <string-array name="create_statements">
         <item>CREATE TABLE exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)</item>
@@ -11,7 +11,7 @@
         <item>CREATE TABLE workout (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50))</item>
         <item>CREATE TABLE workout_exercise (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, workoutId INTEGER REFERENCES workout (id) ON DELETE RESTRICT ON UPDATE CASCADE, exerciseId INTEGER REFERENCES exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE, sets INTEGER, reps INTEGER)</item>
         <item>CREATE TABLE log (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE NOT NULL)</item>
-        <item>CREATE TABLE log_workout_exercise (logId REFERENCES log (id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL, workoutExerciseId INTEGER REFERENCES workout_exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL, sets INTEGER NOT NULL, reps INTEGER NOT NULL, PRIMARY KEY (logId, workoutExerciseId))</item>
+        <item>CREATE TABLE log_workout_exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, logId INTEGER REFERENCES log (id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL, workoutExerciseId INTEGER REFERENCES workout_exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL, sets INTEGER NOT NULL, reps INTEGER NOT NULL)</item>
     </string-array>
 
     <string-array name="categories">
@@ -26,26 +26,26 @@
 
     <!--categoryID:exerciseName-->
     <string-array name="exercises">
-        <item>0:Barbell Bench Press</item>
-        <item>0:Barbell Incline Bench Press</item>
-        <item>0:Dips</item>
-        <item>0:Dumbbell Flys</item>
-        <item>1:Squat</item>
-        <item>1:Leg Press</item>
-        <item>1:Dumbbell Lunge</item>
-        <item>1:Standing Calf Raise</item>
-        <item>2:Barbell Deadlift</item>
-        <item>2:Pull Up</item>
-        <item>2:Standing T-bar Row</item>
-        <item>2:Single-Arm Dumbbell Row</item>
-        <item>3:Plank</item>
-        <item>3:Crunches</item>
-        <item>4:Hammer Curl</item>
-        <item>4:Biceps Curl</item>
-        <item>5:Close-Grip Bench Press</item>
-        <item>5:Dumbbell Overhead Triceps Press</item>
-        <item>6:Military Press</item>
-        <item>6:Front Barbell Raise</item>
+        <item>1:Barbell Bench Press</item>
+        <item>1:Barbell Incline Bench Press</item>
+        <item>1:Dips</item>
+        <item>1:Dumbbell Flys</item>
+        <item>2:Squat</item>
+        <item>2:Leg Press</item>
+        <item>2:Dumbbell Lunge</item>
+        <item>2:Standing Calf Raise</item>
+        <item>3:Barbell Deadlift</item>
+        <item>3:Pull Up</item>
+        <item>3:Standing T-bar Row</item>
+        <item>3:Single-Arm Dumbbell Row</item>
+        <item>4:Plank</item>
+        <item>4:Crunches</item>
+        <item>5:Hammer Curl</item>
+        <item>5:Biceps Curl</item>
+        <item>6:Close-Grip Bench Press</item>
+        <item>6:Dumbbell Overhead Triceps Press</item>
+        <item>7:Military Press</item>
+        <item>7:Front Barbell Raise</item>
     </string-array>
 
     <!--UI-->

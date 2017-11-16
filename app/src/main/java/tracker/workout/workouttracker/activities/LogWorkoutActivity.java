@@ -15,7 +15,6 @@ import tracker.workout.workouttracker.DatabaseHelper;
 import tracker.workout.workouttracker.R;
 import tracker.workout.workouttracker.dataContainers.Workout;
 
-
 public class LogWorkoutActivity extends AppCompatActivity {
 
     private ListView gridView;

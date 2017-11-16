@@ -1,5 +1,6 @@
 package tracker.workout.workouttracker.activities;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
@@ -7,10 +8,7 @@ import android.widget.ListView;
 
 import tracker.workout.workouttracker.DatabaseHelper;
 import tracker.workout.workouttracker.R;
-import tracker.workout.workouttracker.dataContainers.Workout;
 import tracker.workout.workouttracker.dataContainers.Log;
-
-import tracker.workout.workouttracker.dataContainers.WorkoutExercise;
 
 public class WorkoutDiaryActivity extends AppCompatActivity {
 
@@ -23,15 +21,28 @@ public class WorkoutDiaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_workout_diary);
         gridView = (ListView) findViewById(R.id.workoutDiaryListView);
         databaseHelper = new DatabaseHelper(getApplicationContext());
-        Log[] loggedWorkouts = databaseHelper.getLoggedWorkouts();
-        Log loggedWorkout= databaseHelper.getLoggedWorkout(0);
-        System.out.println("Logged Workouts Length:"+loggedWorkouts.length+" id:"+loggedWorkouts[0].getId());
-        Workout workout = loggedWorkouts[0].getWorkout();
-        WorkoutExercise[] workoutEx = workout.getExercises();
-        System.out.println("Workouts Length:"+workoutEx.length);
-        System.out.println("Workout Length:"+loggedWorkout.getWorkout().getExercises().length);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.list_item, loggedWorkouts);
-        gridView.setAdapter(adapter);
+        new GetLoggedWorkoutsTask().execute();
     }
+
+    private class GetLoggedWorkoutsTask extends AsyncTask<Void, Void, Log[]> {
+		@Override
+		protected Log[] doInBackground(Void... voids) {
+			return databaseHelper.getLoggedWorkouts();
+		}
+
+		@Override
+		protected void onPostExecute(Log[] logs) {
+
+			final ArrayAdapter<Log> adapter = new ArrayAdapter<Log>(getApplicationContext(), R.layout.list_item, logs);
+
+			// Can't access view hierarchy on a different thread so run on UI thread
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					gridView.setAdapter(adapter);
+				}
+			});
+		}
+	}
+
 }
