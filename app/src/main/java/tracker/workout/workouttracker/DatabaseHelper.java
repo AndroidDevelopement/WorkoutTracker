@@ -124,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			workoutExerciseCursor.moveToNext();
 
 			if (workoutId == -1 && workoutExerciseCursor.getCount() > 0) {
-				workoutId = workoutExerciseCursor.getLong(0);
+				workoutId = workoutExerciseCursor.getLong(1);
 				workoutName = getWorkoutName(workoutId);
 			}
 

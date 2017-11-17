@@ -27,7 +27,6 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 	private ListView gridView;
 	private DatabaseHelper databaseHelper;
 	private Button logThisWorkoutButton;
-	private long logId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +36,6 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 		logThisWorkoutButton = (Button) findViewById(R.id.logThisWorkoutButton);
 		final Bundle extras = getIntent().getExtras();
 		databaseHelper = new DatabaseHelper(getApplicationContext());
-		logId = -1;
-
-		// TODO: Ask for date? Default - Todays date.
-		String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-
-		new CreateLogTask().execute(date);
 
 		final Workout workout;
 
@@ -111,30 +104,26 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 			});
 
 			// TODO: Ensure each workout has a value for sets and reps before allowing user to log this workout
+			// Default value for sets and reps from workout_exercises table can be used ^^^^^^^^^^^^^^^^^
 			logThisWorkoutButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// Check if task finished
-					if (logId > -1) {
-						new InsertLogExerciseTask().execute(workout);
-					}
+					logThisWorkoutButton.setEnabled(false);
+					new InsertLogExerciseTask().execute(workout);
 				}
 			});
 		}
 
 	}
 
-	private class CreateLogTask extends AsyncTask<String, Void, Void> {
-		@Override
-		protected Void doInBackground(String... strings) {
-			logId = databaseHelper.createLog(strings[0]);
-			return null;
-		}
-	}
-
 	private class InsertLogExerciseTask extends AsyncTask<Workout, Void, Void> {
 		@Override
 		protected Void doInBackground(Workout... workouts) {
+			// TODO: Ask for date? Default - Todays date.
+			String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+
+			long logId = databaseHelper.createLog(date);
+
 			for (WorkoutExercise workoutExercise : workouts[0].getExercises()) {
 				databaseHelper.insertLogWorkoutExercise(logId, workoutExercise);
 			}
