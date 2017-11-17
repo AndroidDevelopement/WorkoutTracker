@@ -24,4 +24,8 @@ public class Log {
 		return workout;
 	}
 
+	public String toString(){
+		return getWorkout().toString()+": "+date;
+	}
+
 }

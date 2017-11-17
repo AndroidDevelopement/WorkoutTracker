@@ -67,13 +67,12 @@ public class LogWorkoutActivity extends AppCompatActivity {
 			final Workout[] workouts = databaseHelper.getWorkouts();
 
 			// Can't access view hierarchy on a different thread so run on UI thread after querying db.
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					gridView.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.list_item, workouts));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    gridView.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.list_item, workouts));
 
 					gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-						@Override
 						public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
 							new LogThisWorkoutTask().execute(parent.getItemAtPosition(position).toString());
 						}
@@ -83,5 +82,6 @@ public class LogWorkoutActivity extends AppCompatActivity {
 			return null;
 		}
 	}
+
 
 }

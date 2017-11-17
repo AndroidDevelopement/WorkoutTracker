@@ -53,5 +53,9 @@
     <string name="no_workouts_created">No Workouts Created..</string>
     <string name="log_this_workout">Log This Workout</string>
     <string name="workout_diary">Workout Diary Screen</string>
+    <string name="no_workouts_logged">No Workouts Logged..</string>
+    <string name="log_workout">LOG WORKOUT</string>
+
+
 
 </resources>

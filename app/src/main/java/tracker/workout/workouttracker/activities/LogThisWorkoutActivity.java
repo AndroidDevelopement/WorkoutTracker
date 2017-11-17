@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import tracker.workout.workouttracker.DatabaseHelper;
 import tracker.workout.workouttracker.R;
 import tracker.workout.workouttracker.dataContainers.Workout;
@@ -37,7 +40,7 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 		logId = -1;
 
 		// TODO: Ask for date? Default - Todays date.
-		String date = "15/11/2017";
+		String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
 		new CreateLogTask().execute(date);
 
@@ -53,6 +56,7 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					// Item that fired the onItemClick event
+					Boolean allowContinue = false;
 					final WorkoutExercise workoutExercise = (WorkoutExercise) gridView.getAdapter().getItem(position);
 
 					AlertDialog.Builder setBuilder = new AlertDialog.Builder(LogThisWorkoutActivity.this);
@@ -85,6 +89,7 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 					repInput.setInputType(InputType.TYPE_CLASS_NUMBER);
 					repBuilder.setView(repInput);
 
+
 					// Setting up buttons for reps
 					repBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 						@Override
@@ -105,6 +110,7 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 				}
 			});
 
+			// TODO: Ensure each workout has a value for sets and reps before allowing user to log this workout
 			logThisWorkoutButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -140,5 +146,6 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 			startActivity(new Intent(LogThisWorkoutActivity.this, MainActivity.class));
 		}
 	}
+
 
 }
