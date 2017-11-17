@@ -36,6 +36,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 		final Bundle extras = getIntent().getExtras();
 
 		if (extras != null) {
+			// FIXME CHANGE TO WorkoutExercise arraylist
 			workoutExercises = (ArrayList<String>) extras.get("workoutExercises");
 			ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.list_item, workoutExercises);
 			workoutExercisesList.setAdapter(adapter);
@@ -49,7 +50,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 
     public void init() {
         addExerciseButton = (Button) findViewById(R.id.addExercise);
-        saveExerciseButton = (Button) findViewById(R.id.save);
+        saveExerciseButton = (Button) findViewById(R.id.logThisWorkoutButton);
 
         addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +97,6 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 			String[] arr = workoutExercises.toArray(new String[workoutExercises.size()]);
 
 			databaseHelper.createWorkout(inputText);
-
 			for (String exercise : arr) {
 				// FIXME Instead of passing 0 ask to enter sets and reps.
 				databaseHelper.insertWorkout(inputText, exercise, 0, 0);

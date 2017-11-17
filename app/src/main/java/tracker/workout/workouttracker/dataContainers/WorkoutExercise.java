@@ -28,6 +28,14 @@ public class WorkoutExercise implements Serializable {
 		return reps;
 	}
 
+	public void setSets(int sets) {
+		this.sets = sets;
+	}
+
+	public void setReps(int reps) {
+		this.reps = reps;
+	}
+
 	@Override
 	public String toString() {
 		return name;

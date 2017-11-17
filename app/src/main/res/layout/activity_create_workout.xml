@@ -44,7 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
-        android:id="@+id/save"
+        android:id="@+id/logThisWorkoutButton"
         android:background="@color/dullGreen"
         android:textSize="24sp"
         android:layout_width="0dp"

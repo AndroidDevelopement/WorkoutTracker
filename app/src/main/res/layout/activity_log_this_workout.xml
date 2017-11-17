@@ -9,18 +9,19 @@
 
     <ListView
         android:id="@+id/logThisWorkoutListView"
-        android:layout_width="match_parent"
+        android:layout_width="368dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/save"
+        app:layout_constraintBottom_toTopOf="@+id/logThisWorkoutButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ListView>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="8dp"></ListView>
 
     <Button
-        android:id="@+id/save"
-        android:layout_width="match_parent"
+        android:id="@+id/logThisWorkoutButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/green1"
         android:text="@string/log_this_workout"
