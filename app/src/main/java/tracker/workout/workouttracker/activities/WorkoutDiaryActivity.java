@@ -84,9 +84,7 @@ public class WorkoutDiaryActivity extends AppCompatActivity {
 
 					gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 						public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
-							System.out.println("here");
 							WorkoutExercise[] a = loggedWorkouts[position].getWorkout().getExercises();
-
 							Intent intent = new Intent(getApplicationContext(), ThisWorkoutDiaryActivity.class);
 							intent.putExtra("workout", loggedWorkouts[position].getWorkout());
 							startActivity(intent);
@@ -94,6 +92,7 @@ public class WorkoutDiaryActivity extends AppCompatActivity {
 					});
 				}
 			});
+
 			return null;
 		}
 	}

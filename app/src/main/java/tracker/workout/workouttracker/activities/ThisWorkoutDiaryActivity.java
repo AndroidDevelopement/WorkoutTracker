@@ -1,8 +1,15 @@
 package tracker.workout.workouttracker.activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +21,8 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
 
     private ListView gridView;
     private TextView textView;
+    public Button addPhotoButton;
+    public Button shareToFacebookButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,5 +49,26 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
             gridView.setAdapter(adapter);
 
         }
+
+        init();
+    }
+
+    public void init() {
+        addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
+        shareToFacebookButton = (Button) findViewById(R.id.shareToFacebookButton);
+
+        addPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        shareToFacebookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
