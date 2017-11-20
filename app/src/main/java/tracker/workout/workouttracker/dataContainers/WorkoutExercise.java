@@ -40,4 +40,6 @@ public class WorkoutExercise implements Serializable {
 	public String toString() {
 		return name;
 	}
+
+	public String toSetsRepsString() { return name + "\n" + sets  + " Sets x " + reps + " Reps"; }
 }

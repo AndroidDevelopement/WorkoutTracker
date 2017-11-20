@@ -12,7 +12,6 @@
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,7 +25,8 @@
         <activity android:name=".activities.WorkoutDiaryActivity" />
         <activity android:name=".activities.ExercisesForCategoryActivity" />
         <activity android:name=".activities.CreateWorkoutActivity" />
-        <activity android:name=".activities.LogThisWorkoutActivity"></activity>
+        <activity android:name=".activities.LogThisWorkoutActivity" />
+        <activity android:name=".activities.ThisWorkoutDiaryActivity"></activity>
     </application>
 
 </manifest>

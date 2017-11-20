@@ -15,6 +15,7 @@ import tracker.workout.workouttracker.DatabaseHelper;
 import tracker.workout.workouttracker.R;
 import tracker.workout.workouttracker.dataContainers.Log;
 import tracker.workout.workouttracker.dataContainers.Workout;
+import tracker.workout.workouttracker.dataContainers.WorkoutExercise;
 
 public class WorkoutDiaryActivity extends AppCompatActivity {
 
@@ -74,12 +75,7 @@ public class WorkoutDiaryActivity extends AppCompatActivity {
 		protected Void doInBackground(Void... voids) {
 			final Log[] loggedWorkouts = databaseHelper.getLoggedWorkouts();
 			final Workout[] workouts = databaseHelper.getWorkouts();
-			for (int i=0; i<loggedWorkouts.length; i++){
-				System.out.println("Logged "+i+": "+loggedWorkouts[i].getWorkout().toString());
-			}
-			for (int i=0; i<workouts.length; i++){
-				System.out.println("Workout "+i+": "+workouts[i].toString());
-			}
+
 			// Can't access view hierarchy on a different thread so run on UI thread after querying db.
 			runOnUiThread(new Runnable() {
 				@Override
@@ -88,11 +84,15 @@ public class WorkoutDiaryActivity extends AppCompatActivity {
 
 					gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 						public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
-							new GetLoggedWorkoutsTask().execute();
+							WorkoutExercise[] a = loggedWorkouts[position].getWorkout().getExercises();
+							Intent intent = new Intent(getApplicationContext(), ThisWorkoutDiaryActivity.class);
+							intent.putExtra("workout", loggedWorkouts[position].getWorkout());
+							startActivity(intent);
 						}
 					});
 				}
 			});
+
 			return null;
 		}
 	}
