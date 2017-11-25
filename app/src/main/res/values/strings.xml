@@ -55,6 +55,8 @@
     <string name="workout_diary">Workout Diary Screen</string>
     <string name="no_workouts_logged">No Workouts Logged..</string>
     <string name="log_workout">LOG WORKOUT</string>
+    <string name="row_delete">DELETE</string>
+    <string name="row_edit">EDIT</string>
 
 
 </resources>

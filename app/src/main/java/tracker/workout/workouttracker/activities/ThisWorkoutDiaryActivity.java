@@ -2,6 +2,7 @@ package tracker.workout.workouttracker.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,7 +61,10 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                // Required for saving the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, android.os.Environment.DIRECTORY_DCIM);
+                startActivity(intent);
             }
         });
 

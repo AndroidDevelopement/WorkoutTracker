@@ -6,16 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import tracker.workout.workouttracker.CustomAdapter;
 import tracker.workout.workouttracker.DatabaseHelper;
 import tracker.workout.workouttracker.R;
 import tracker.workout.workouttracker.dataContainers.Log;
-import tracker.workout.workouttracker.dataContainers.Workout;
-import tracker.workout.workouttracker.dataContainers.WorkoutExercise;
 
 public class WorkoutDiaryActivity extends AppCompatActivity {
 
@@ -49,42 +47,21 @@ public class WorkoutDiaryActivity extends AppCompatActivity {
 		});
 	}
 
-	private class GetLoggedWorkoutsTask extends AsyncTask<Void, Void, Log[]> {
-		@Override
-		protected Log[] doInBackground(Void... voids) {
-			return databaseHelper.getLoggedWorkouts();
-		}
-
-		@Override
-		protected void onPostExecute(Log[] logs) {
-
-			final ArrayAdapter<Log> adapter = new ArrayAdapter<Log>(getApplicationContext(), R.layout.list_item, logs);
-
-			// Can't access view hierarchy on a different thread so run on UI thread
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					gridView.setAdapter(adapter);
-				}
-			});
-		}
-	}
-
 	private class PopulateGridViewTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... voids) {
 			final Log[] loggedWorkouts = databaseHelper.getLoggedWorkouts();
-			final Workout[] workouts = databaseHelper.getWorkouts();
 
 			// Can't access view hierarchy on a different thread so run on UI thread after querying db.
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					gridView.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.list_item, loggedWorkouts));
+
+					CustomAdapter adapt = new CustomAdapter(getApplicationContext(), R.layout.list_row, loggedWorkouts);
+					gridView.setAdapter(adapt);
 
 					gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 						public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
-							WorkoutExercise[] a = loggedWorkouts[position].getWorkout().getExercises();
 							Intent intent = new Intent(getApplicationContext(), ThisWorkoutDiaryActivity.class);
 							intent.putExtra("workout", loggedWorkouts[position].getWorkout());
 							startActivity(intent);
