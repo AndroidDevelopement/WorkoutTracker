@@ -24,3 +24,5 @@
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:minHeight="?android:attr/listPreferredItemHeightLarge"
     android:textSize="20dp" />
+
+

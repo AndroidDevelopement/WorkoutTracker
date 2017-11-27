@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import tracker.workout.workouttracker.CustomAdapter;
 import tracker.workout.workouttracker.DatabaseHelper;
 import tracker.workout.workouttracker.R;
 import tracker.workout.workouttracker.dataContainers.Workout;
@@ -70,7 +70,9 @@ public class LogWorkoutActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    gridView.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.list_item, workouts));
+
+                	CustomAdapter adapt = new CustomAdapter(getApplicationContext(), R.layout.list_row, workouts);
+                	gridView.setAdapter(adapt);
 
 					gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 						public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
