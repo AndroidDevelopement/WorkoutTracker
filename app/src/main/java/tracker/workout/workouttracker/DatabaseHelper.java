@@ -58,7 +58,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			cv.put("exerciseId", exerciseId);
 			db.insert(CATEGORY_EXERCISE_TABLE, null, cv);
 		}
-
 	}
 
 	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -99,7 +98,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return db.insert(LOG_WORKOUT_EXERCISE_TABLE, null, cv);
 	}
 
-	// TODO: TEST THE METHOD!
+	public void deleteLoggedWorkoutExercise(long id, long workoutExerciseId) {
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(LOG_WORKOUT_EXERCISE_TABLE, "logId = ? AND workoutExerciseId = ?", new String[] {Long.toString(id), Long.toString(workoutExerciseId)});
+	}
+
+	public void deleteLoggedWorkout(long id) {
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(LOG_WORKOUT_EXERCISE_TABLE, "logId = ?", new String[] {Long.toString(id)});
+		db.delete(LOG_TABLE, "id = ?", new String[] {Long.toString(id)});
+	}
+
+	public void deleteWorkoutExercise(long workoutId, long exerciseId) {
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(WORKOUT_EXERCISE_TABLE, "workoutId = ? AND exerciseId = ?", new String[] {Long.toString(workoutId), Long.toString(exerciseId)});
+	}
+
+	private void deleteLoggedWorkouts(long workoutId) {
+		Log[] logs = getLoggedWorkouts();
+		for (Log log : logs) {
+			if (log.getWorkout().getId() == workoutId) {
+				deleteLoggedWorkout(log.getId());
+			}
+		}
+	}
+
+	public void deleteWorkout(long workoutId) {
+		// Before deleting workout we must delete logged workouts using this workout.
+		deleteLoggedWorkouts(workoutId);
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(WORKOUT_EXERCISE_TABLE, "workoutId = ?", new String[] {Long.toString(workoutId)});
+		db.delete(WORKOUT_TABLE, "id = ?", new String[] {Long.toString(workoutId)});
+	}
+
 	private Log getLoggedWorkout(long id) {
 		SQLiteDatabase db = getWritableDatabase();
 		Cursor c = db.query(LOG_TABLE, new String[] {"date"}, null, null, null, null, null);
@@ -135,7 +166,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 			exercises[i] = new WorkoutExercise(exerciseId, exerciseName, (workoutExerciseSets == 0) ? exerciseDefaultSets : workoutExerciseSets, (workoutExerciseReps == 0) ? exerciseDefaultReps : workoutExerciseReps);
 		}
-
 		return new Log(id, date, new Workout(workoutId, workoutName, exercises));
 	}
 
@@ -149,7 +179,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			c.moveToNext();
 			logs[i] = getLoggedWorkout(c.getLong(0));
 		}
-
 		return logs;
 	}
 
@@ -201,7 +230,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		cv.put("sets", sets);
 		return db.update(table, cv, (table.equals(WORKOUT_EXERCISE_TABLE)) ? "id" : "logId" + " = ?", new String[] {Long.toString(rowId)}) == 1;
 	}
-
 
 	// Can be used to change defaults in workout_exercise or logged_workout tables.
 	// Returns if changed or not
@@ -278,7 +306,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			c.moveToNext();
 			workouts[i] = c.getString(0);
 		}
-
 		return workouts;
 	}
 
@@ -293,7 +320,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			c.moveToNext();
 			exercises[i] = new WorkoutExercise(c.getLong(0), c.getString(1), c.getInt(2), c.getInt(3));
 		}
-
 		return exercises;
 	}
 
@@ -307,7 +333,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			c.moveToNext();
 			exercises[i] = c.getString(0);
 		}
-
 		return exercises;
 	}
 

@@ -1,6 +1,7 @@
 package tracker.workout.workouttracker;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created by Mantas on 24/11/2017.
- */
+import tracker.workout.workouttracker.dataContainers.Log;
+import tracker.workout.workouttracker.dataContainers.Workout;
 
 public class CustomAdapter<T> extends BaseAdapter implements ListAdapter {
     private ArrayList<T> list;
@@ -58,7 +58,31 @@ public class CustomAdapter<T> extends BaseAdapter implements ListAdapter {
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+                Object object = list.get(position);
+
+                if (object instanceof Log) {
+                	final Log log = (Log) object;
+					new AsyncTask() {
+						@Override
+						protected Void doInBackground(Object... objects) {
+							DatabaseHelper databaseHelper = new DatabaseHelper(v.getContext());
+							databaseHelper.deleteLoggedWorkout(log.getId());
+							return null;
+						}
+					}.execute();
+				} else if (object instanceof Workout) {
+                	final Workout workout = (Workout) object;
+					new AsyncTask() {
+						@Override
+						protected Void doInBackground(Object... objects) {
+							DatabaseHelper databaseHelper = new DatabaseHelper(v.getContext());
+							databaseHelper.deleteWorkout(workout.getId());
+							return null;
+						}
+					}.execute();
+				}
+
                 // Delete data from database
                 list.remove(position);
                 notifyDataSetChanged();
@@ -68,6 +92,7 @@ public class CustomAdapter<T> extends BaseAdapter implements ListAdapter {
             @Override
             public void onClick(View v) {
                 // Edit data
+				// TODO
             }
         });
 
