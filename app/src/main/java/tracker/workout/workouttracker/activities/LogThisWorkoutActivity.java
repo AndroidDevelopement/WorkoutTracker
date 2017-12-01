@@ -1,3 +1,8 @@
+/*
+ *  LogThisWorkoutActivity - This Activity is where a workout is
+ *  logged. User enters reps and sets and then logs the activity.
+ */
+
 package tracker.workout.workouttracker.activities;
 
 import android.content.DialogInterface;
@@ -28,6 +33,10 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 	private DatabaseHelper databaseHelper;
 	private Button logThisWorkoutButton;
 
+	/*
+     *	onCreate - Sets up a list view that contains all of the exercises in a particular workout.
+     * 	Also sets up some buttons that will be used to log workout etc.
+    */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,7 +45,6 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 		logThisWorkoutButton = (Button) findViewById(R.id.logThisWorkoutButton);
 		final Bundle extras = getIntent().getExtras();
 		databaseHelper = new DatabaseHelper(getApplicationContext());
-
 		final Workout workout;
 
 		if (extras != null) {
@@ -117,6 +125,10 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 	}
 
 	private class InsertLogExerciseTask extends AsyncTask<Workout, Void, Void> {
+		/*
+		 *	doInBackground - Inserts logged workout into the database.
+		 *  This workout is given a date aswell as exercises.
+		*/
 		@Override
 		protected Void doInBackground(Workout... workouts) {
 			// TODO: Ask for date? Default - Todays date.
@@ -130,11 +142,10 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 			return null;
 		}
 
+		// Once logged workout has been put into the database, this is called.
 		@Override
 		protected void onPostExecute(Void aVoid) {
 			startActivity(new Intent(LogThisWorkoutActivity.this, MainActivity.class));
 		}
 	}
-
-
 }

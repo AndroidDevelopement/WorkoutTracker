@@ -1,16 +1,17 @@
+/*
+ *  ThisWorkoutDiaryActivity - This Activity is where the user can view details
+ *  about a particular logged workout. eg sets, reps for an exercise.
+ */
+
 package tracker.workout.workouttracker.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +26,10 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
     public Button addPhotoButton;
     public Button shareToFacebookButton;
 
+    /*
+     *	onCreate - Sets up a list view that contains all exercises in the workout.
+     * 	Also shows the reps and sets for each exercise.
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,10 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
         init();
     }
 
+    /*
+     *  init - Sets up the buttons for adding a photo and sharing to Facebook.
+     *  Also contains the click listeners for these.
+     */
     public void init() {
         addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
         shareToFacebookButton = (Button) findViewById(R.id.shareToFacebookButton);

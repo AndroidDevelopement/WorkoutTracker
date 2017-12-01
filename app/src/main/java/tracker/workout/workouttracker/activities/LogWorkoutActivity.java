@@ -1,3 +1,8 @@
+/*
+ *  LogWorkoutActivity - This Activity is where the user selects
+ *  which workout they would like to log.
+ */
+
 package tracker.workout.workouttracker.activities;
 
 import android.content.Intent;
@@ -22,17 +27,17 @@ public class LogWorkoutActivity extends AppCompatActivity {
     private TextView emptyText;
     private DatabaseHelper databaseHelper;
 
+	/*
+	 *	onCreate - Sets up a list view that contains all of the workouts that can be logged.
+	 * 	If there are no created workouts, there is a button to create one.
+	*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         databaseHelper = new DatabaseHelper(getApplicationContext());
-
         setContentView(R.layout.activity_log_workout);
         gridView = (ListView) findViewById(R.id.workoutListView);
-
 		new PopulateGridViewTask().execute();
-
         emptyButton = (Button) findViewById(R.id.emptyCreateWorkoutButton);
         gridView.setEmptyView(emptyButton);
         emptyText = (TextView) findViewById(R.id.emptyText);
@@ -48,11 +53,13 @@ public class LogWorkoutActivity extends AppCompatActivity {
     }
 
 	private class LogThisWorkoutTask extends AsyncTask<String, Void, Workout> {
+		// Getting workout in the background
 		@Override
 		protected Workout doInBackground(String... strings) {
 			return databaseHelper.getWorkout(strings[0]);
 		}
 
+		// Once post has been carried out, start the new activity with the workout as the intent.
 		@Override
 		protected void onPostExecute(Workout workout) {
 			Intent intent = new Intent(getApplicationContext(), LogThisWorkoutActivity.class);
@@ -70,7 +77,6 @@ public class LogWorkoutActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
                 	CustomAdapter adapt = new CustomAdapter(getApplicationContext(), R.layout.list_row, workouts);
                 	gridView.setAdapter(adapt);
 
@@ -81,9 +87,8 @@ public class LogWorkoutActivity extends AppCompatActivity {
 					});
 				}
 			});
+
 			return null;
 		}
 	}
-
-
 }
