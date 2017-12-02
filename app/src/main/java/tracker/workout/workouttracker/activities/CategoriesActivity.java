@@ -1,3 +1,8 @@
+/*
+ *	CategoriesActivity - This Activity displays a ListView of different
+ *	categories for exercises.
+ */
+
 package tracker.workout.workouttracker.activities;
 
 import android.content.Intent;
@@ -8,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 
 import tracker.workout.workouttracker.DatabaseHelper;
@@ -18,6 +24,10 @@ public class CategoriesActivity extends AppCompatActivity {
     private ListView gridView;
 	public DatabaseHelper databaseHelper;
 
+	/*
+	 *	onCreate - Sets up a list view to display categories and also
+	 *	adds a click listner to each of these categories in the list
+	 */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +48,11 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private class CategoriesActivityTask extends AsyncTask<String, Void, Void> {
+
+		/*
+ 		 *	doInBackground - gets exercises from category that was clicked on and puts
+ 		 *	them as an extra in the intent before starting the new Activity.
+ 		 */
 		@Override
 		protected Void doInBackground(String... strings) {
 			String[] categoryExercises = databaseHelper.getExercisesForCategory(strings[0]);
@@ -50,5 +65,4 @@ public class CategoriesActivity extends AppCompatActivity {
 			return null;
 		}
 	}
-
 }

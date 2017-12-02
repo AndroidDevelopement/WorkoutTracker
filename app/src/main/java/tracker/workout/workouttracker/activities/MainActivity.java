@@ -1,3 +1,8 @@
+/*
+ *  MainActivity - This Activity is where the user selects what they would
+ *  like to do. They can create / log a workout or view their diary
+ */
+
 package tracker.workout.workouttracker.activities;
 
 import android.content.Intent;
@@ -14,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public Button logWorkoutButton;
     public Button workoutDiaryButton;
 
+    // init - Sets up buttons for the menu
     public void init() {
 		createWorkoutButton = (Button)findViewById(R.id.createWorkoutButton);
         createWorkoutButton.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //onCreate - Sets up content and calls init.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,3 +1,8 @@
+/*
+ *  CreateWorkoutActivity - This Activity is where a workout is
+ *  created. User adds chosen exercises into workout and names it.
+ */
+
 package tracker.workout.workouttracker.activities;
 
 import android.content.DialogInterface;
@@ -28,6 +33,10 @@ public class CreateWorkoutActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     private ListView workoutExercisesList;
 
+    /*
+     *	onCreate - Sets up a list view that will display exercises already
+     *  added to the workout. Also sets up some buttons.
+    */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,6 +57,10 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 		init();
 	}
 
+    /*
+     *	init - Adds click listeners to buttons which may be used to start new
+     *  activities or add exercises.
+    */
     public void init() {
         addExerciseButton = (Button) findViewById(R.id.addExercise);
         saveExerciseButton = (Button) findViewById(R.id.logThisWorkoutButton);
@@ -92,6 +105,10 @@ public class CreateWorkoutActivity extends AppCompatActivity {
     }
 
 	private class CreateWorkoutTask extends AsyncTask<Void, Void, Void> {
+        /*
+         *	doInBackground - Inserts workout into the database once create workout
+         *  button has been pressed and then starts the main activity again.
+        */
 		@Override
 		protected Void doInBackground(Void... voids) {
 			String[] arr = workoutExercises.toArray(new String[workoutExercises.size()]);
@@ -106,5 +123,4 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 			return null;
 		}
 	}
-
 }
