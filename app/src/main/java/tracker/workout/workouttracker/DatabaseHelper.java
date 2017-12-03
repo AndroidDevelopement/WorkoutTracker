@@ -163,7 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			long workoutExerciseId = c.getLong(2);
 			int workoutExerciseSets = c.getInt(3);
 			int workoutExerciseReps = c.getInt(4);
-			int workoutExerciseWeight = c.getInt(4);
+			int workoutExerciseWeight = c.getInt(5);
 
 			Cursor workoutExerciseCursor = db.query(WORKOUT_EXERCISE_TABLE, null, "id = ?", new String[] {Long.toString(workoutExerciseId)}, null, null, null);
 			workoutExerciseCursor.moveToNext();
@@ -177,7 +177,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			String exerciseName = getExerciseName(exerciseId);
 			int exerciseDefaultSets = workoutExerciseCursor.getInt(3);
 			int exerciseDefaultReps = workoutExerciseCursor.getInt(4);
-			int exerciseDefaultWeight = workoutExerciseCursor.getInt(4);
+			int exerciseDefaultWeight = workoutExerciseCursor.getInt(5);
 
 			exercises[i] = new WorkoutExercise(exerciseId, exerciseName, (workoutExerciseSets == 0) ? exerciseDefaultSets : workoutExerciseSets, (workoutExerciseReps == 0) ? exerciseDefaultReps : workoutExerciseReps, (workoutExerciseWeight == 0) ? exerciseDefaultWeight : workoutExerciseWeight);
 		}
