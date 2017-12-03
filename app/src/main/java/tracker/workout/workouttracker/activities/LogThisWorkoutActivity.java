@@ -34,7 +34,6 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 	private Button logThisWorkoutButton;
 	private Workout workout;
 
-
 	/*
      *	onCreate - Sets up a list view that contains all of the exercises in a particular workout.
      * 	Also sets up some buttons that will be used to log workout etc.
