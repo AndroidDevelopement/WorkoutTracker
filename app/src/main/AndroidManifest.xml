@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tracker.workout.workouttracker">
+    <uses-sdk android:minSdkVersion="14"/>
 
     <application
         android:allowBackup="true"
@@ -9,16 +10,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateWorkoutActivity" />
-        <activity android:name=".LogWorkoutActivity" />
-        <activity android:name=".WorkoutDiaryActivity"></activity>
+        <activity android:name=".activities.CategoriesActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.LogWorkoutActivity" />
+        <activity android:name=".activities.WorkoutDiaryActivity" />
+        <activity android:name=".activities.ExercisesForCategoryActivity" />
+        <activity android:name=".activities.CreateWorkoutActivity" />
+        <activity android:name=".activities.LogThisWorkoutActivity" />
+        <activity android:name=".activities.ThisWorkoutDiaryActivity"></activity>
     </application>
 
 </manifest>
