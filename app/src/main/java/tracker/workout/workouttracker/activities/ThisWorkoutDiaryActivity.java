@@ -24,7 +24,8 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
     private ListView gridView;
     private TextView textView;
     public Button addPhotoButton;
-    public Button shareToFacebookButton;
+    public Button shareButton;
+    private Workout workout;
 
     /*
      *	onCreate - Sets up a list view that contains all exercises in the workout.
@@ -38,7 +39,6 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.workoutNameTextView);
 
         final Bundle extras = getIntent().getExtras();
-        final Workout workout;
 
         if (extras != null) {
             workout = (Workout) extras.getSerializable("workout");
@@ -65,7 +65,7 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
      */
     public void init() {
         addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
-        shareToFacebookButton = (Button) findViewById(R.id.shareToFacebookButton);
+        shareButton = (Button) findViewById(R.id.shareButton);
 
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +77,25 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
             }
         });
 
-        shareToFacebookButton.setOnClickListener(new View.OnClickListener() {
+        shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                String shareHeading = "I just did my "+workout.toString()+" workout";
+                String shareBody = "I just did my "+workout.toString()+" workout:";
+                String endLine = ".\nAnd logged it using the WorkoutTracker app!";
+                WorkoutExercise[] exercises = workout.getExercises();
+                for (int i=0;i<exercises.length;i++){
+                    if (shareBody.length()+exercises[i].toString().length() < 280-endLine.length()){
+                        shareBody += (", "+exercises[i].toString());
+                    }
+                }
+                shareBody += (endLine);
+
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareHeading);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(shareIntent, "Share using:"));
 
             }
         });
