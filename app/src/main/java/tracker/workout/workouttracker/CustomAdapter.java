@@ -6,6 +6,7 @@
 package tracker.workout.workouttracker;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import tracker.workout.workouttracker.dataContainers.Log;
+import tracker.workout.workouttracker.dataContainers.Workout;
 
 /**
  * Created by Mantas on 24/11/2017.
@@ -62,10 +66,33 @@ public class CustomAdapter<T> extends BaseAdapter implements ListAdapter {
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 // Delete data from database
+                Object object = list.get(position);
                 list.remove(position);
                 notifyDataSetChanged();
+
+                if (object instanceof Log) {
+                    final Log log = (Log) object;
+                    new AsyncTask() {
+                        @Override
+                        protected Void doInBackground(Object... objects) {
+                            DatabaseHelper databaseHelper = new DatabaseHelper(v.getContext());
+                            databaseHelper.deleteLoggedWorkout(log.getId());
+                            return null;
+                        }
+                    }.execute();
+                } else if (object instanceof Workout) {
+                    final Workout workout = (Workout) object;
+                    new AsyncTask() {
+                        @Override
+                        protected Void doInBackground(Object... objects) {
+                            DatabaseHelper databaseHelper = new DatabaseHelper(v.getContext());
+                            databaseHelper.deleteWorkout(workout.getId());
+                            return null;
+                        }
+                    }.execute();
+                }
             }
         });
 
