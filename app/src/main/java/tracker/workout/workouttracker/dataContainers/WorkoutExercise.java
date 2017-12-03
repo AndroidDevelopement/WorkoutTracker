@@ -13,13 +13,15 @@ public class WorkoutExercise implements Serializable {
 	private String name;
 	private int sets;
 	private int reps;
+	private int weight;
 
 	// Constructor for WorkoutExercise
-	public WorkoutExercise(long id, String name, int sets, int reps) {
+	public WorkoutExercise(long id, String name, int sets, int reps, int weight) {
 		this.id = id;
 		this.name = name;
 		this.sets = sets;
 		this.reps = reps;
+		this.weight = weight;
 	}
 
 	public long getId() {
@@ -34,6 +36,8 @@ public class WorkoutExercise implements Serializable {
 		return reps;
 	}
 
+	public int getWeight() { return weight;  }
+
 	public void setSets(int sets) {
 		this.sets = sets;
 	}
@@ -42,10 +46,12 @@ public class WorkoutExercise implements Serializable {
 		this.reps = reps;
 	}
 
+	public void setWeight(int weight) { this.weight = weight; }
+
 	@Override
 	public String toString() {
 		return name;
 	}
 
-	public String toSetsRepsString() { return name + "\n" + sets  + " Sets x " + reps + " Reps"; }
+	public String toSetsRepsString() { return name + "\n" + sets  + " Sets x " + reps + " Reps x " + weight + " kgs"; }
 }

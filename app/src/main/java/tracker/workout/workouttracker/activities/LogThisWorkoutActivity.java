@@ -109,6 +109,32 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 					});
 
 					repBuilder.show();
+
+					//boundary
+					AlertDialog.Builder weightBuilder = new AlertDialog.Builder(LogThisWorkoutActivity.this);
+					weightBuilder.setTitle("Weight (kgs)");
+					final EditText weightInput = new EditText(LogThisWorkoutActivity.this);
+					weightInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+					weightBuilder.setView(weightInput);
+
+
+					// Setting up buttons for weights
+					weightBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							int weight = Integer.parseInt(weightInput.getText().toString());
+							workoutExercise.setWeight(weight);
+						}
+					});
+
+					weightBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+					});
+
+					weightBuilder.show();
 				}
 			});
 
@@ -116,7 +142,7 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View v) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(LogThisWorkoutActivity.this);
-					builder.setMessage("Have you entered reps and sets for each exercise?")
+					builder.setMessage("Have you entered weights, reps and sets for each exercise?")
 							.setPositiveButton("Yes", dialogClickListener)
 							.setNegativeButton("No", dialogClickListener).show();
 				}

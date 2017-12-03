@@ -2,16 +2,16 @@
     <string name="app_name">WorkoutTracker</string>
 
     <!--Increase or decrease version to delete and recreate the database-->
-    <integer name="database_version">111111</integer>
+    <integer name="database_version">1</integer>
 
     <string-array name="create_statements">
         <item>CREATE TABLE exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)</item>
         <item>CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50) UNIQUE)</item>
         <item>CREATE TABLE category_exercise (categoryId INTEGER REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE, exerciseId INTEGER REFERENCES exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE, PRIMARY KEY (categoryId, exerciseId), UNIQUE (categoryId, exerciseId))</item>
         <item>CREATE TABLE workout (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR (50))</item>
-        <item>CREATE TABLE workout_exercise (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, workoutId INTEGER REFERENCES workout (id) ON DELETE RESTRICT ON UPDATE CASCADE, exerciseId INTEGER REFERENCES exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE, sets INTEGER, reps INTEGER)</item>
+        <item>CREATE TABLE workout_exercise (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, workoutId INTEGER REFERENCES workout (id) ON DELETE RESTRICT ON UPDATE CASCADE, exerciseId INTEGER REFERENCES exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE, sets INTEGER, reps INTEGER, weight INTEGER)</item>
         <item>CREATE TABLE log (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE NOT NULL)</item>
-        <item>CREATE TABLE log_workout_exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, logId INTEGER REFERENCES log (id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL, workoutExerciseId INTEGER REFERENCES workout_exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL, sets INTEGER NOT NULL, reps INTEGER NOT NULL)</item>
+        <item>CREATE TABLE log_workout_exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, logId INTEGER REFERENCES log (id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL, workoutExerciseId INTEGER REFERENCES workout_exercise (id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL, sets INTEGER NOT NULL, reps INTEGER NOT NULL, weight INTEGER NOT NULL)</item>
     </string-array>
 
     <string-array name="categories">

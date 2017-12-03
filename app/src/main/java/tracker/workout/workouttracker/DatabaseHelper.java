@@ -43,7 +43,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		for (String string : context.getResources().getStringArray(R.array.create_statements)) {
 			db.execSQL(string);
 		}
-
 		// Store categories in to db
 		for (int i = 0; i < resCategories.length; i++) {
 			ContentValues cv = new ContentValues();
@@ -105,6 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		cv.put("workoutExerciseId", workoutExercise.getId());
 		cv.put("sets", workoutExercise.getSets());
 		cv.put("reps", workoutExercise.getReps());
+		cv.put("weight", workoutExercise.getWeight());
 		return db.insert(LOG_WORKOUT_EXERCISE_TABLE, null, cv);
 	}
 
@@ -163,6 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			long workoutExerciseId = c.getLong(2);
 			int workoutExerciseSets = c.getInt(3);
 			int workoutExerciseReps = c.getInt(4);
+			int workoutExerciseWeight = c.getInt(5);
 
 			Cursor workoutExerciseCursor = db.query(WORKOUT_EXERCISE_TABLE, null, "id = ?", new String[] {Long.toString(workoutExerciseId)}, null, null, null);
 			workoutExerciseCursor.moveToNext();
@@ -176,8 +177,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			String exerciseName = getExerciseName(exerciseId);
 			int exerciseDefaultSets = workoutExerciseCursor.getInt(3);
 			int exerciseDefaultReps = workoutExerciseCursor.getInt(4);
+			int exerciseDefaultWeight = workoutExerciseCursor.getInt(5);
 
-			exercises[i] = new WorkoutExercise(exerciseId, exerciseName, (workoutExerciseSets == 0) ? exerciseDefaultSets : workoutExerciseSets, (workoutExerciseReps == 0) ? exerciseDefaultReps : workoutExerciseReps);
+			exercises[i] = new WorkoutExercise(exerciseId, exerciseName, (workoutExerciseSets == 0) ? exerciseDefaultSets : workoutExerciseSets, (workoutExerciseReps == 0) ? exerciseDefaultReps : workoutExerciseReps, (workoutExerciseWeight == 0) ? exerciseDefaultWeight : workoutExerciseWeight);
 		}
 		return new Log(id, date, new Workout(workoutId, workoutName, exercises));
 	}
@@ -287,7 +289,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	// Inserts a workout into the database
-	public long insertWorkout(String workoutName, String exercise, int sets, int reps) {
+	public long insertWorkout(String workoutName, String exercise, int sets, int reps, int weight) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues cv = new ContentValues();
 
@@ -295,6 +297,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		cv.put("exerciseId", getExerciseId(exercise));
 		cv.put("sets", sets);
 		cv.put("reps", reps);
+		cv.put("weight", weight);
 		return db.insert(WORKOUT_EXERCISE_TABLE, null, cv);
 	}
 
@@ -334,13 +337,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Returns a String array of all exercises associated with a workout
 	public WorkoutExercise[] getWorkoutExercises(String workoutName) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor c = db.rawQuery("SELECT we.id, e.name, we.sets, we.reps FROM " + WORKOUT_EXERCISE_TABLE + " we, " + WORKOUT_TABLE + " w, " + EXERCISE_TABLE + " e WHERE we.workoutId = w.id AND we.exerciseId = e.id AND w.name = '" + workoutName + "'", null);
+		Cursor c = db.rawQuery("SELECT we.id, e.name, we.sets, we.reps, we.weight FROM " + WORKOUT_EXERCISE_TABLE + " we, " + WORKOUT_TABLE + " w, " + EXERCISE_TABLE + " e WHERE we.workoutId = w.id AND we.exerciseId = e.id AND w.name = '" + workoutName + "'", null);
 
 		WorkoutExercise[] exercises = new WorkoutExercise[c.getCount()];
 
 		for (int i = 0; i < c.getCount(); i++) {
 			c.moveToNext();
-			exercises[i] = new WorkoutExercise(c.getLong(0), c.getString(1), c.getInt(2), c.getInt(3));
+			exercises[i] = new WorkoutExercise(c.getLong(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4));
 		}
 		return exercises;
 	}
