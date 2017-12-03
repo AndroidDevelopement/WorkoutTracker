@@ -54,7 +54,6 @@ public class CustomAdapter<T> extends BaseAdapter implements ListAdapter {
         listItemText.setText(list.get(position).toString());
 
         Button deleteBtn = (Button)view.findViewById(R.id.row_delete);
-        Button editBtn = (Button)view.findViewById(R.id.row_edit);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -62,12 +61,6 @@ public class CustomAdapter<T> extends BaseAdapter implements ListAdapter {
                 // Delete data from database
                 list.remove(position);
                 notifyDataSetChanged();
-            }
-        });
-        editBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                // Edit data
             }
         });
 
