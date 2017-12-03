@@ -1,3 +1,8 @@
+/*
+ *  ExercisesForCategoryActivity - This activity displays all of the
+ *  exercises for the selected category.
+ */
+
 package tracker.workout.workouttracker.activities;
 
 import android.content.Intent;
@@ -7,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 
 import tracker.workout.workouttracker.R;
@@ -15,6 +21,10 @@ public class ExercisesForCategoryActivity extends AppCompatActivity {
 
     private ListView exerciseList;
 
+    /*
+     *	onCreate - Sets up a list view that will display exercises that are in
+     *  the specified category.
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

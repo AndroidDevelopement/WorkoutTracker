@@ -1,3 +1,8 @@
+/*
+ *  DatabaseHelper - A helper for the database. Used to query particular
+ *  workouts, exercises, logs, etc.
+ */
+
 package tracker.workout.workouttracker;
 
 import android.content.ContentValues;
@@ -23,11 +28,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private Context context;
 
+	// Constructor for the db helper
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, context.getResources().getInteger(R.integer.database_version));
 		this.context = context;
 	}
 
+	// Called when the database helper is initialized
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String[] resExercises = context.getResources().getStringArray(R.array.exercises);
@@ -69,6 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		reset(db, oldVersion, newVersion);
 	}
 
+	// Resets by deleting all tables
 	private void reset(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + LOG_WORKOUT_EXERCISE_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + LOG_TABLE);
@@ -80,6 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
+	// Creates a logged workout
 	public long createLog(String date) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues cv = new ContentValues();
@@ -87,6 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return db.insert(LOG_TABLE, null, cv);
 	}
 
+	// Inserts a logged workout exercise
 	public long insertLogWorkoutExercise(long logId, WorkoutExercise workoutExercise) {
 		// workoutExerciseId == workout_exercise.id <- primary key
 		SQLiteDatabase db = getWritableDatabase();
@@ -114,6 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.delete(WORKOUT_EXERCISE_TABLE, "workoutId = ? AND exerciseId = ?", new String[] {Long.toString(workoutId), Long.toString(exerciseId)});
 	}
 
+	// Deletes a logged workout from a workout id
 	private void deleteLoggedWorkouts(long workoutId) {
 		Log[] logs = getLoggedWorkouts();
 		for (Log log : logs) {
@@ -123,6 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 	}
 
+	// Deletes a workout from the db
 	public void deleteWorkout(long workoutId) {
 		// Before deleting workout we must delete logged workouts using this workout.
 		deleteLoggedWorkouts(workoutId);
@@ -131,6 +143,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.delete(WORKOUT_TABLE, "id = ?", new String[] {Long.toString(workoutId)});
 	}
 
+	// Returns a workout from an id
 	private Log getLoggedWorkout(long id) {
 		SQLiteDatabase db = getWritableDatabase();
 		Cursor c = db.query(LOG_TABLE, new String[] {"date"}, null, null, null, null, null);
@@ -169,6 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return new Log(id, date, new Workout(workoutId, workoutName, exercises));
 	}
 
+	// Returns an array of all logged workouts
 	public Log[] getLoggedWorkouts() {
 		SQLiteDatabase db = getWritableDatabase();
 		Cursor c = db.query(LOG_TABLE, new String[] {"id"}, null, null, null, null, null);
@@ -182,6 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return logs;
 	}
 
+	// Gets an exercise name from an id
 	private String getExerciseName(long id) {
 		SQLiteDatabase db = getWritableDatabase();
 		Cursor c = db.query(EXERCISE_TABLE, new String[]{"name"}, "id = ?", new String[] {Long.toString(id)}, null, null, null);
@@ -192,6 +207,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return null;
 	}
 
+	// Gets an exercise id from a name
 	private long getExerciseId(String name) {
 		SQLiteDatabase db = getWritableDatabase();
 		Cursor c = db.query(EXERCISE_TABLE, new String[]{"id"}, "name = ?", new String[] {name}, null, null, null);
@@ -202,6 +218,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return -1;
 	}
 
+	// Gets a workout id from a name
 	private long getWorkoutId(String name) {
 		SQLiteDatabase db = getWritableDatabase();
 		Cursor c = db.query(WORKOUT_TABLE, new String[]{"id"}, "name = ?", new String[] {name}, null, null, null);
@@ -212,6 +229,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return -1;
 	}
 
+	// Gets a workout name from an Id
 	private String getWorkoutName(long id) {
 		SQLiteDatabase db = getWritableDatabase();
 		Cursor c = db.query(WORKOUT_TABLE, new String[]{"name"}, "id = ?", new String[] {Long.toString(id)}, null, null, null);
@@ -260,6 +278,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return -1;
 	}
 
+	// Creates  WORKOUT
 	public long createWorkout(String name) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues cv = new ContentValues();
@@ -267,6 +286,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return db.insert(WORKOUT_TABLE, null, cv);
 	}
 
+	// Inserts a workout into the database
 	public long insertWorkout(String workoutName, String exercise, int sets, int reps) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues cv = new ContentValues();
@@ -278,11 +298,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return db.insert(WORKOUT_EXERCISE_TABLE, null, cv);
 	}
 
+	// Returns a workout with a given name
 	public Workout getWorkout(String name) {
 		WorkoutExercise[] workoutExercises = getWorkoutExercises(name);
 		return new Workout(getWorkoutId(name), name, workoutExercises);
 	}
 
+	// Returns an array with all workouts
 	public Workout[] getWorkouts() {
 		String[] workoutNames = getWorkoutNames();
 
@@ -335,5 +357,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		return exercises;
 	}
-
 }

@@ -1,3 +1,8 @@
+/*
+ *  Log - Custom data type for a logged workout. Made up of an id,
+ *  a date and a workout.
+ */
+
 package tracker.workout.workouttracker.dataContainers;
 
 public class Log {
@@ -6,6 +11,7 @@ public class Log {
 	private String date;
 	private Workout workout;
 
+	// Constructor for log
 	public Log(long id, String date, Workout workout) {
 		this.id = id;
 		this.date = date;
@@ -27,5 +33,4 @@ public class Log {
 	public String toString(){
 		return workout + ": " + date;
 	}
-
 }

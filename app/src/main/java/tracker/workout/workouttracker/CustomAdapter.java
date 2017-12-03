@@ -1,3 +1,8 @@
+/*
+ *  CustomAdapter - A custom adapter made to display edit and delete
+ *  buttons on particular lists.
+ */
+
 package tracker.workout.workouttracker;
 
 import android.content.Context;

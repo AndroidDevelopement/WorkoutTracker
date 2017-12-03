@@ -1,16 +1,17 @@
+/*
+ *  ThisWorkoutDiaryActivity - This Activity is where the user can view details
+ *  about a particular logged workout. eg sets, reps for an exercise.
+ */
+
 package tracker.workout.workouttracker.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,8 +24,13 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
     private ListView gridView;
     private TextView textView;
     public Button addPhotoButton;
-    public Button shareToFacebookButton;
+    public Button shareButton;
+    private Workout workout;
 
+    /*
+     *	onCreate - Sets up a list view that contains all exercises in the workout.
+     * 	Also shows the reps and sets for each exercise.
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +39,6 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.workoutNameTextView);
 
         final Bundle extras = getIntent().getExtras();
-        final Workout workout;
 
         if (extras != null) {
             workout = (Workout) extras.getSerializable("workout");
@@ -54,9 +59,13 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
         init();
     }
 
+    /*
+     *  init - Sets up the buttons for adding a photo and sharing to Facebook.
+     *  Also contains the click listeners for these.
+     */
     public void init() {
         addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
-        shareToFacebookButton = (Button) findViewById(R.id.shareToFacebookButton);
+        shareButton = (Button) findViewById(R.id.shareButton);
 
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +77,25 @@ public class ThisWorkoutDiaryActivity extends AppCompatActivity {
             }
         });
 
-        shareToFacebookButton.setOnClickListener(new View.OnClickListener() {
+        shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                String shareHeading = "I just did my "+workout.toString()+" workout";
+                String shareBody = "I just did my "+workout.toString()+" workout:";
+                String endLine = ".\nAnd logged it using the WorkoutTracker app!";
+                WorkoutExercise[] exercises = workout.getExercises();
+                for (int i=0;i<exercises.length;i++){
+                    if (shareBody.length()+exercises[i].toString().length() < 280-endLine.length()){
+                        shareBody += (", "+exercises[i].toString());
+                    }
+                }
+                shareBody += (endLine);
+
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareHeading);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(shareIntent, "Share using:"));
 
             }
         });

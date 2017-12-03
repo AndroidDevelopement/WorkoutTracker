@@ -1,3 +1,8 @@
+/*
+ *  WorkoutDiaryActivity - This Activity is where the user can decide which
+ *  logged workout they would like to see in more detail.
+ */
+
 package tracker.workout.workouttracker.activities;
 
 import android.content.Intent;
@@ -22,6 +27,10 @@ public class WorkoutDiaryActivity extends AppCompatActivity {
 	private TextView emptyText;
 	private DatabaseHelper databaseHelper;
 
+	/*
+ 	 *	onCreate - Sets up a list view that contains all of the logged workouts.
+ 	 *	Also contains the dates that these workouts were logged.
+	*/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

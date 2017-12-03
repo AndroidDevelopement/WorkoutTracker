@@ -1,3 +1,8 @@
+/*
+ *  WorkoutExercise - Custom data type for a workout exercise. Made up
+ *  of an id, a name, reps and sets.
+ */
+
 package tracker.workout.workouttracker.dataContainers;
 
 import java.io.Serializable;
@@ -9,6 +14,7 @@ public class WorkoutExercise implements Serializable {
 	private int sets;
 	private int reps;
 
+	// Constructor for WorkoutExercise
 	public WorkoutExercise(long id, String name, int sets, int reps) {
 		this.id = id;
 		this.name = name;
