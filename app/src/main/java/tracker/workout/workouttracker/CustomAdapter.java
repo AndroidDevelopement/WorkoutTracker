@@ -6,7 +6,6 @@
 package tracker.workout.workouttracker;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import tracker.workout.workouttracker.dataContainers.Log;
-import tracker.workout.workouttracker.dataContainers.Workout;
+/**
+ * Created by Mantas on 24/11/2017.
+ */
 
 public class CustomAdapter<T> extends BaseAdapter implements ListAdapter {
     private ArrayList<T> list;
@@ -59,45 +59,13 @@ public class CustomAdapter<T> extends BaseAdapter implements ListAdapter {
         listItemText.setText(list.get(position).toString());
 
         Button deleteBtn = (Button)view.findViewById(R.id.row_delete);
-        Button editBtn = (Button)view.findViewById(R.id.row_edit);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(final View v) {
-                Object object = list.get(position);
-
-                if (object instanceof Log) {
-                	final Log log = (Log) object;
-					new AsyncTask() {
-						@Override
-						protected Void doInBackground(Object... objects) {
-							DatabaseHelper databaseHelper = new DatabaseHelper(v.getContext());
-							databaseHelper.deleteLoggedWorkout(log.getId());
-							return null;
-						}
-					}.execute();
-				} else if (object instanceof Workout) {
-                	final Workout workout = (Workout) object;
-					new AsyncTask() {
-						@Override
-						protected Void doInBackground(Object... objects) {
-							DatabaseHelper databaseHelper = new DatabaseHelper(v.getContext());
-							databaseHelper.deleteWorkout(workout.getId());
-							return null;
-						}
-					}.execute();
-				}
-
+            public void onClick(View v) {
                 // Delete data from database
                 list.remove(position);
                 notifyDataSetChanged();
-            }
-        });
-        editBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                // Edit data
-				// TODO
             }
         });
 
