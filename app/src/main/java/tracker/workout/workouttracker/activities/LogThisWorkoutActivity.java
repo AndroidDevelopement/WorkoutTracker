@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -130,6 +131,7 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 				case DialogInterface.BUTTON_POSITIVE:
 					logThisWorkoutButton.setEnabled(false);
 					new InsertLogExerciseTask().execute(workout);
+					Toast.makeText(LogThisWorkoutActivity.this, "Workout Logged", Toast.LENGTH_SHORT).show();
 					break;
 
 				case DialogInterface.BUTTON_NEGATIVE:
