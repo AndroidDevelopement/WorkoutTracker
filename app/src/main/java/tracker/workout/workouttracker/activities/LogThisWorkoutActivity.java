@@ -32,6 +32,8 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 	private ListView gridView;
 	private DatabaseHelper databaseHelper;
 	private Button logThisWorkoutButton;
+	private Workout workout;
+
 
 	/*
      *	onCreate - Sets up a list view that contains all of the exercises in a particular workout.
@@ -45,7 +47,6 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 		logThisWorkoutButton = (Button) findViewById(R.id.logThisWorkoutButton);
 		final Bundle extras = getIntent().getExtras();
 		databaseHelper = new DatabaseHelper(getApplicationContext());
-		final Workout workout;
 
 		if (extras != null) {
 			workout = (Workout) extras.getSerializable("workout");
@@ -111,18 +112,32 @@ public class LogThisWorkoutActivity extends AppCompatActivity {
 				}
 			});
 
-			// TODO: Ensure each workout has a value for sets and reps before allowing user to log this workout
-			// Default value for sets and reps from workout_exercises table can be used ^^^^^^^^^^^^^^^^^
 			logThisWorkoutButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					logThisWorkoutButton.setEnabled(false);
-					new InsertLogExerciseTask().execute(workout);
+					AlertDialog.Builder builder = new AlertDialog.Builder(LogThisWorkoutActivity.this);
+					builder.setMessage("Have you entered reps and sets for each exercise?")
+							.setPositiveButton("Yes", dialogClickListener)
+							.setNegativeButton("No", dialogClickListener).show();
 				}
 			});
 		}
-
 	}
+
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which){
+				case DialogInterface.BUTTON_POSITIVE:
+					logThisWorkoutButton.setEnabled(false);
+					new InsertLogExerciseTask().execute(workout);
+					break;
+
+				case DialogInterface.BUTTON_NEGATIVE:
+					break;
+			}
+		}
+	};
 
 	private class InsertLogExerciseTask extends AsyncTask<Workout, Void, Void> {
 		/*
